@@ -11,12 +11,8 @@ $initial = strtoupper(substr($user['name'], 0, 1));
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LibraryQuiet – Zone Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/NOISE_MONITOR/assets/zones.css"/>
   <script>window.__LQ_SESSION__ = <?= json_encode($user) ?>;</script>
   <style>
-    /* ============================================================
-   LibraryQuiet – reports-manager.css  (teal)
-   ============================================================ */
 /* ============================================================
    LibraryQuiet – zones.css
    ============================================================ */
@@ -69,6 +65,7 @@ nav::-webkit-scrollbar{width:3px}nav::-webkit-scrollbar-thumb{background:#334155
 .tb-right{display:flex;align-items:center;gap:12px}
 .role-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700}
 .admin-badge{background:#fef9c3;color:#713f12;border:1px solid #fde047}
+.manager-badge{background:#ccfbf1;color:#0f766e;border:1px solid #99f6e4}
 .live-badge{display:flex;align-items:center;gap:6px;background:#d1fae5;padding:5px 14px;border-radius:20px}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#10b981;animation:pulse 1.5s infinite}
 .live-text{font-size:11px;font-weight:700;color:#065f46}
@@ -138,12 +135,11 @@ td{padding:13px 14px;font-size:13px}
 .noise-val{font-weight:900;font-family:'JetBrains Mono',monospace;font-size:13px}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:200;animation:fadeIn .2s}
-.modal-overlay.show{display:block}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:560px;max-width:95vw;max-height:90vh;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2);z-index:300;overflow:hidden;flex-direction:column;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:200;display:none}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:560px;max-width:95vw;max-height:90vh;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2);z-index:300;overflow:hidden;flex-direction:column;display:none;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
 .modal-sm{width:420px}
 .modal.show{display:flex}
+.modal-overlay.show{display:block}
 @keyframes slideUp{from{opacity:0;transform:translate(-50%,-44%)}to{opacity:1;transform:translate(-50%,-48%)}}
 .modal-header{padding:22px 24px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
 .modal-title{font-weight:800;font-size:16px;color:var(--text)}.modal-sub{font-size:12px;color:var(--light);margin-top:2px}
@@ -163,13 +159,6 @@ td{padding:13px 14px;font-size:13px}
 .form-input.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
 .form-err{font-size:11px;color:#ef4444;margin-top:4px;font-weight:600}
 
-/* VIEW BODY */
-.view-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.view-field{background:#f8fafc;border-radius:10px;padding:12px 14px}
-.vf-label{font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px}
-.vf-val{font-size:14px;font-weight:700;color:var(--text)}
-.view-divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0}
-
 /* TOAST */
 .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif}
 .toast.show{transform:translateY(0);opacity:1}
@@ -179,20 +168,17 @@ td{padding:13px 14px;font-size:13px}
 
 @media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){#content{padding:16px}.form-row{grid-template-columns:1fr}}
-
-/* Modal display fixes */
-.modal-overlay { display: none; }
-.modal-overlay.show { display: block !important; }
-.modal { display: none; }
-.modal.show { display: flex !important; }
   </style>
 </head>
 <body>
- 
+
   <aside id="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-icon">📡</div>
-      <div class="sb-logo-text"><div class="sb-logo-name">LibraryQuiet</div><div class="sb-logo-sub">Noise Monitor v1.0</div></div>
+      <div class="sb-logo-text">
+        <div class="sb-logo-name">LibraryQuiet</div>
+        <div class="sb-logo-sub">Noise Monitor v1.0</div>
+      </div>
     </div>
     <div class="sb-user">
       <div class="sb-user-label">Logged in as</div>
@@ -224,7 +210,7 @@ td{padding:13px 14px;font-size:13px}
       <button class="sb-toggle" onclick="toggleSidebar()">◀</button>
     </div>
   </aside>
- 
+
   <div id="main">
     <header id="topbar">
       <div>
@@ -232,22 +218,21 @@ td{padding:13px 14px;font-size:13px}
         <div class="tb-date" id="tb-date">Loading...</div>
       </div>
       <div class="tb-right">
-        <div class="role-badge manager-badge" id="role-badge">📋 Library Manager</div>
+     
         <div class="live-badge"><span class="live-dot"></span><span class="live-text">LIVE</span></div>
-        <a class="tb-bell" href="/NOISE_MONITOR/dashboards/manager/alerts-manager.php">🔔<span class="tb-bc" id="bell-count">0</span></a>
         <div class="tb-av"><?= $initial ?></div>
       </div>
     </header>
- 
+
     <div id="content">
- 
+
       <div class="stat-grid">
         <div class="stat-card blue"><div class="stat-top"><div><div class="stat-label">Total Zones</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">Monitored areas</div></div><div class="stat-icon">▦</div></div></div>
         <div class="stat-card green"><div class="stat-top"><div><div class="stat-label">Active Zones</div><div class="stat-val" id="s-active">0</div><div class="stat-sub">Currently online</div></div><div class="stat-icon">✅</div></div></div>
         <div class="stat-card yellow"><div class="stat-top"><div><div class="stat-label">Total Capacity</div><div class="stat-val" id="s-capacity">0</div><div class="stat-sub">Max persons</div></div><div class="stat-icon">👥</div></div></div>
         <div class="stat-card red"><div class="stat-top"><div><div class="stat-label">Loud Zones Now</div><div class="stat-val" id="s-loud">0</div><div class="stat-sub">Above threshold</div></div><div class="stat-icon">🔴</div></div></div>
       </div>
- 
+
       <div class="card">
         <div class="toolbar">
           <div class="toolbar-left">
@@ -270,7 +255,7 @@ td{padding:13px 14px;font-size:13px}
           </div>
           <button class="btn-primary" onclick="openAddModal()">＋ Add New Zone</button>
         </div>
- 
+
         <div class="tbl-wrap">
           <table>
             <thead>
@@ -285,10 +270,10 @@ td{padding:13px 14px;font-size:13px}
         </div>
         <div class="tbl-footer" id="tbl-count">Loading...</div>
       </div>
- 
+
     </div>
   </div>
- 
+
   <!-- ADD/EDIT MODAL -->
   <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
   <div class="modal" id="zone-modal">
@@ -322,7 +307,7 @@ td{padding:13px 14px;font-size:13px}
       <button class="btn-primary" id="modal-save-btn" onclick="saveZone()">Save Zone</button>
     </div>
   </div>
- 
+
   <!-- DELETE MODAL -->
   <div class="modal-overlay" id="del-overlay" onclick="closeDeleteModal()"></div>
   <div class="modal modal-sm" id="del-modal">
@@ -339,7 +324,7 @@ td{padding:13px 14px;font-size:13px}
       <button class="btn-danger" onclick="confirmDelete()">Yes, Delete</button>
     </div>
   </div>
- 
+
   <!-- VIEW MODAL -->
   <div class="modal-overlay" id="view-overlay" onclick="closeViewModal()"></div>
   <div class="modal" id="view-modal">
@@ -353,9 +338,428 @@ td{padding:13px 14px;font-size:13px}
       <button class="btn-primary" id="view-edit-btn">✏️ Edit Zone</button>
     </div>
   </div>
- 
+
   <div class="toast" id="toast"></div>
-  <script src="/NOISE_MONITOR/app-data.js"></script>
-  <script src="/NOISE_MONITOR/zones-manager.js"></script>
+
+  <script>
+// ============================================================
+//  LibraryQuiet – app-data.js  (inlined)
+// ============================================================
+const AppData = (() => {
+  const API = '/NOISE_MONITOR/api.php';
+  let _session = window.__LQ_SESSION__ || null;
+
+  async function post(action, data = {}) {
+    try {
+      const res = await fetch(`${API}?action=${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return await res.json();
+    } catch (e) {
+      console.error(`API[${action}]:`, e);
+      return { error: e.message };
+    }
+  }
+
+  async function get(action) {
+    try {
+      const res = await fetch(`${API}?action=${action}`);
+      return await res.json();
+    } catch (e) {
+      console.error(`API[${action}]:`, e);
+      return null;
+    }
+  }
+
+  // SESSION
+  async function loadSession() { const d = await get('session'); _session = d?.user || null; return _session; }
+  function getSession()        { return _session; }
+  function isAdmin()           { return _session?.role === 'Administrator'; }
+  function isManager()         { return _session?.role === 'Library Manager'; }
+  function isStaff()           { return _session?.role === 'Library Staff'; }
+  async function clearSession(){ await post('logout'); _session = null; window.location.href = '/NOISE_MONITOR/logout.php'; }
+
+  function applySession() {
+    if (!_session) return;
+    const name    = _session.name || _session.email;
+    const initial = name.charAt(0).toUpperCase();
+    const isAdm   = isAdmin(), isMgr = isManager();
+    const roleIcon  = isAdm ? '👑 ' : isMgr ? '📋 ' : '👤 ';
+    const roleColor = isAdm
+      ? 'linear-gradient(135deg,#1d4ed8,#3b82f6)'
+      : isMgr
+        ? 'linear-gradient(135deg,#0d9488,#0f766e)'
+        : 'linear-gradient(135deg,#7c3aed,#8b5cf6)';
+
+    document.querySelectorAll('.sb-uname,.sb-bname').forEach(el => el.textContent = name);
+    document.querySelectorAll('.sb-urole').forEach(el => el.textContent = roleIcon + _session.role);
+    document.querySelectorAll('.sb-brole').forEach(el => el.textContent = _session.role);
+    document.querySelectorAll('.sb-av,.sb-av-lg,.tb-av,.top-av').forEach(el => {
+      el.textContent = initial;
+      el.style.background = roleColor;
+    });
+    const badge = document.getElementById('role-badge');
+    if (badge) {
+      badge.textContent = roleIcon + _session.role;
+      badge.className   = 'role-badge ' + (isAdm ? 'admin-badge' : isMgr ? 'manager-badge' : 'staff-badge');
+    }
+    updateNotifBadge();
+  }
+
+  // ZONES
+  let _zones = [];
+  async function loadZones()              { _zones = await get('get_zones') || []; return _zones; }
+  function  getZones()                    { return _zones; }
+  function  getZone(id)                   { return _zones.find(z => z.id === id); }
+  async function setSensorLevel(zoneId, db) {
+    await post('set_sensor', { id: zoneId, level: db });
+    const z = _zones.find(z => z.id === zoneId);
+    if (z) { z.level = db; z.manualOverride = true; }
+    _alerts = await get('get_alerts') || _alerts;
+  }
+  async function clearSensorOverride(zoneId) {
+    await post('clear_sensor', { id: zoneId });
+    const z = _zones.find(z => z.id === zoneId);
+    if (z) z.manualOverride = false;
+  }
+  let _overrides = {};
+  async function loadSensorOverrides()    { _overrides = await get('get_sensor_overrides') || {}; return _overrides; }
+  function  getSensorOverrides()          { return _overrides; }
+  async function addZone(z)              { return await post('add_zone', z); }
+  async function updateZone(z)           { return await post('update_zone', z); }
+  async function deleteZone(id)          { return await post('delete_zone', { id }); }
+
+  // ALERTS
+  let _alerts = [];
+  async function loadAlerts()            { _alerts = await get('get_alerts') || []; return _alerts; }
+  function  getAlerts()                  { return _alerts; }
+  function  getActiveAlerts()            { return _alerts.filter(a => a.status === 'active'); }
+  async function resolveAlert(id, by)    { await post('resolve_alert', { id, resolvedBy: by }); const a = _alerts.find(a => a.id === id); if (a) { a.status = 'resolved'; a.resolvedBy = by; } updateNotifBadge(); }
+  async function addAlertMessage(alertId, message) { await post('add_alert_message', { alertId, message }); }
+  function  getAlertMessages(alertId)    { return _alerts.find(a => a.id === alertId)?.messages || []; }
+  async function deleteAlert(id)         { await post('delete_alert', { id }); _alerts = _alerts.filter(a => a.id !== id); }
+  async function addAlert(a)             { return await post('add_alert', a); }
+
+  // REPORTS
+  let _reports = [];
+  async function loadReports()           { _reports = await get('get_reports') || []; return _reports; }
+  function  getReports()                 { return _reports; }
+  function  getUnreadReports()           { return _reports.filter(r => r.sentToAdmin && !r.adminReadAt); }
+  async function addReport(r)            { return await post('add_report', r); }
+  async function sendReportToAdmin(id)   { return await post('send_report', { id }); }
+  async function markReportRead(id)      { return await post('mark_report_read', { id }); }
+  async function deleteReport(id)        { await post('delete_report', { id }); _reports = _reports.filter(r => r.id !== id); }
+
+  // USERS
+  let _users = [];
+  async function loadUsers()             { _users = await get('get_users') || []; return _users; }
+  function  getUsers()                   { return _users; }
+  function  getUserByEmail(email)        { return _users.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+  async function addUser(u)              { return await post('add_user', u); }
+  async function updateUser(id, data)    { return await post('update_user', { id, ...data }); }
+  async function deleteUser(id)          { return await post('delete_user', { id }); }
+  async function updatePassword(id, pw)  { return await post('update_password', { id, password: pw }); }
+
+  // BADGE
+  function updateNotifBadge() {
+    const active = getActiveAlerts().length;
+    ['alert-nb', 'bell-count'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = active; el.style.display = active > 0 ? '' : 'none'; }
+    });
+  }
+
+  async function loadAll() {
+    await Promise.all([loadZones(), loadAlerts(), loadSensorOverrides(), loadUsers(), loadReports()]);
+  }
+
+  return {
+    loadSession, getSession, isAdmin, isManager, isStaff, clearSession, applySession,
+    loadZones, getZones, getZone, setSensorLevel, clearSensorOverride, loadSensorOverrides, getSensorOverrides, addZone, updateZone, deleteZone,
+    loadAlerts, getAlerts, getActiveAlerts, resolveAlert, addAlertMessage, getAlertMessages, deleteAlert, addAlert,
+    loadReports, getReports, getUnreadReports, addReport, sendReportToAdmin, markReportRead, deleteReport,
+    loadUsers, getUsers, getUserByEmail, addUser, updateUser, deleteUser, updatePassword,
+    updateNotifBadge, loadAll,
+    get _session()  { return _session; },
+    set _session(v) { _session = v; }
+  };
+})();
+
+
+// ============================================================
+//  LibraryQuiet – zones-manager.js  (inlined)
+// ============================================================
+
+function el(id)        { return document.getElementById(id); }
+function setText(id,v) { const e=el(id); if(e) e.textContent=v; }
+function noiseColor(db){ return db<40?'#10b981':db<60?'#f59e0b':'#ef4444'; }
+function noiseStatus(db){ return db<40?'quiet':db<60?'moderate':'loud'; }
+
+let deleteTargetId = '';
+
+// ── CLOCK ──────────────────────────────────────────────────
+function startClock(){
+  const u = () => {
+    const n = new Date();
+    setText('tb-date',
+      n.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
+      + ' · '
+      + n.toLocaleTimeString('en-PH')
+    );
+  };
+  u(); setInterval(u, 1000);
+}
+
+function toggleSidebar(){ el('sidebar').classList.toggle('collapsed'); }
+
+// ── TOAST ──────────────────────────────────────────────────
+function showToast(msg, type = 'success'){
+  const t = el('toast'); if (!t) return;
+  t.textContent = msg;
+  t.className   = 'toast show';
+  t.style.background = type === 'error' ? '#ef4444' : type === 'info' ? '#3b82f6' : '#0f172a';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+
+// ── STATS ──────────────────────────────────────────────────
+function renderStats(){
+  const z = AppData.getZones();
+  setText('s-total',    z.length);
+  setText('s-active',   z.filter(x => x.status === 'active').length);
+  setText('s-capacity', z.reduce((a, x) => a + (x.capacity || 0), 0));
+  setText('s-loud',     z.filter(x => x.level >= (x.critThreshold || 60)).length);
+}
+
+// ── FILTER ─────────────────────────────────────────────────
+function getFiltered(){
+  const q = (el('search-input')?.value || '').toLowerCase();
+  const f = el('floor-filter')?.value  || '';
+  const s = el('status-filter')?.value || '';
+  return AppData.getZones().filter(z => {
+    return (!q || z.name.toLowerCase().includes(q) || z.id.toLowerCase().includes(q) || (z.sensor||'').toLowerCase().includes(q))
+        && (!f || z.floor   === f)
+        && (!s || z.status  === s);
+  });
+}
+function filterZones(){ renderTable(); }
+function resetFilters(){
+  if (el('search-input'))  el('search-input').value  = '';
+  if (el('floor-filter'))  el('floor-filter').value  = '';
+  if (el('status-filter')) el('status-filter').value = '';
+  renderTable();
+}
+
+// ── TABLE ──────────────────────────────────────────────────
+function renderTable(){
+  const tbody = el('zones-tbody'); if (!tbody) return;
+  const zones  = getFiltered();
+  const all    = AppData.getZones().length;
+  setText('tbl-count', `Showing ${zones.length} of ${all} zone${all !== 1 ? 's' : ''}`);
+
+  if (!zones.length) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:32px;color:#94a3b8;">No zones found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = zones.map(z => {
+    const col   = noiseColor(z.level);
+    const stBg  = z.status === 'active' ? '#d1fae5' : '#f1f5f9';
+    const stCol = z.status === 'active' ? '#065f46' : '#64748b';
+    return `<tr>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748b;">${z.id}</td>
+      <td style="font-weight:700;">${z.name}</td>
+      <td><span style="background:#f1f5f9;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${z.floor}</span></td>
+      <td style="font-weight:600;">${z.capacity}</td>
+      <td><span style="font-weight:900;color:${col};">${Math.round(z.level)} dB</span></td>
+      <td style="color:#f59e0b;font-weight:700;">${z.warnThreshold} dB</td>
+      <td style="color:#ef4444;font-weight:700;">${z.critThreshold} dB</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${z.sensor || '—'}</td>
+      <td><span style="background:${stBg};color:${stCol};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;">${z.status}</span></td>
+      <td>
+        <button class="tbl-btn tb-view" onclick="openViewModal('${z.id}')">👁</button>
+        <button class="tbl-btn tb-edit" onclick="openEditModal('${z.id}')">✏️</button>
+        <button class="tbl-btn tb-del"  onclick="openDeleteModal('${z.id}')">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── MODAL HELPERS ──────────────────────────────────────────
+function openModal(overlayId, modalId){
+  const ov = el(overlayId), mo = el(modalId);
+  if (ov) { ov.classList.add('show'); }
+  if (mo) { mo.classList.add('show'); }
+}
+function closeModalById(overlayId, modalId){
+  const ov = el(overlayId), mo = el(modalId);
+  if (ov) ov.classList.remove('show');
+  if (mo) mo.classList.remove('show');
+}
+
+// ── ADD MODAL ──────────────────────────────────────────────
+function openAddModal(){
+  el('modal-title').textContent = 'Add New Zone';
+  el('modal-sub').textContent   = 'Fill in zone details';
+  el('edit-id').value           = '';
+  el('f-name').value            = '';
+  el('f-sensor').value          = '';
+  el('f-desc').value            = '';
+  el('f-floor').value           = '';
+  el('f-status').value          = 'active';
+  el('f-capacity').value        = '';
+  el('f-warn').value            = '40';
+  el('f-critical').value        = '60';
+  el('modal-save-btn').textContent = 'Save Zone';
+  openModal('modal-overlay', 'zone-modal');
+}
+
+// ── EDIT MODAL ─────────────────────────────────────────────
+function openEditModal(id){
+  const z = AppData.getZone(id); if (!z) return;
+  el('modal-title').textContent    = 'Edit Zone';
+  el('modal-sub').textContent      = 'Update zone details';
+  el('edit-id').value              = z.id;
+  el('f-name').value               = z.name;
+  el('f-floor').value              = z.floor;
+  el('f-capacity').value           = z.capacity;
+  el('f-sensor').value             = z.sensor || '';
+  el('f-warn').value               = z.warnThreshold;
+  el('f-critical').value           = z.critThreshold;
+  el('f-desc').value               = z.desc || '';
+  el('f-status').value             = z.status;
+  el('modal-save-btn').textContent = 'Update Zone';
+  openModal('modal-overlay', 'zone-modal');
+}
+
+function closeModal(){ closeModalById('modal-overlay', 'zone-modal'); }
+
+// ── SAVE ZONE ──────────────────────────────────────────────
+async function saveZone(){
+  const name     = el('f-name').value.trim();
+  const floor    = el('f-floor').value;
+  const capacity = parseInt(el('f-capacity').value) || 0;
+  const sensor   = el('f-sensor').value.trim();
+  const warn     = parseInt(el('f-warn').value)     || 40;
+  const critical = parseInt(el('f-critical').value) || 60;
+  const desc     = el('f-desc').value.trim();
+  const status   = el('f-status').value;
+  const editId   = el('edit-id').value;
+
+  if (!name)                       { showToast('⚠️ Zone name is required.', 'error');           return; }
+  if (!floor)                      { showToast('⚠️ Please select a floor.', 'error');           return; }
+  if (!capacity || capacity < 1)   { showToast('⚠️ Enter a valid capacity.', 'error');          return; }
+  if (warn >= critical)            { showToast('⚠️ Warning must be less than Critical.', 'error'); return; }
+
+  const btn = el('modal-save-btn');
+  if (btn) btn.textContent = 'Saving…';
+
+  try {
+    if (editId) {
+      await AppData.updateZone({ id: editId, name, floor, capacity, warnThreshold: warn, critThreshold: critical, sensor, desc, status });
+      showToast('✅ Zone updated successfully!');
+    } else {
+      await AppData.addZone({ name, floor, capacity, occupied: 0, level: 0, warnThreshold: warn, critThreshold: critical, sensor, battery: 100, status, desc });
+      showToast('✅ Zone added successfully!');
+    }
+    await AppData.loadZones();
+    closeModal();
+    renderStats();
+    renderTable();
+  } catch (e) {
+    showToast('❌ Failed to save zone.', 'error');
+  }
+  if (btn) btn.textContent = 'Save Zone';
+}
+
+// ── DELETE MODAL ───────────────────────────────────────────
+function openDeleteModal(id){
+  const z = AppData.getZone(id); if (!z) return;
+  deleteTargetId = id;
+  setText('del-zone-name', z.name);
+  openModal('del-overlay', 'del-modal');
+}
+function closeDeleteModal(){ closeModalById('del-overlay', 'del-modal'); }
+
+async function confirmDelete(){
+  if (!deleteTargetId) return;
+  const z = AppData.getZone(deleteTargetId);
+  try {
+    await AppData.deleteZone(deleteTargetId);
+    await AppData.loadZones();
+    closeDeleteModal();
+    renderStats();
+    renderTable();
+    showToast(`🗑️ Zone "${z?.name}" deleted.`, 'info');
+  } catch (e) {
+    showToast('❌ Failed to delete zone.', 'error');
+  }
+  deleteTargetId = '';
+}
+
+// ── VIEW MODAL ─────────────────────────────────────────────
+function openViewModal(id){
+  const z = AppData.getZone(id); if (!z) return;
+  el('view-title').textContent = z.name;
+  const col = noiseColor(z.level);
+  const pct = Math.min(100, (z.level / 90) * 100).toFixed(1);
+  el('view-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:4px 0;">
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Zone ID</div><div style="font-family:'JetBrains Mono',monospace;font-weight:700;">${z.id}</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Floor</div><div style="font-weight:700;">${z.floor}</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Capacity</div><div style="font-weight:700;">${z.capacity} persons</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Occupied</div><div style="font-weight:700;">${z.occupied}</div></div>
+      <div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Current Noise</div>
+        <div style="font-size:28px;font-weight:900;color:${col};">${Math.round(z.level)} dB</div>
+        <div style="height:6px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin-top:6px;">
+          <div style="width:${pct}%;height:100%;background:${col};border-radius:4px;transition:width .5s;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Status</div>
+        <span style="background:${z.status==='active'?'#d1fae5':'#f1f5f9'};color:${z.status==='active'?'#065f46':'#64748b'};padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">${z.status}</span>
+      </div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Sensor</div><div style="font-family:'JetBrains Mono',monospace;font-weight:700;">${z.sensor || '—'}</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Battery</div><div style="font-weight:700;">🔋 ${z.battery || 80}%</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Warn Threshold</div><div style="font-weight:700;color:#f59e0b;">${z.warnThreshold} dB</div></div>
+      <div><div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;margin-bottom:4px;">Critical Threshold</div><div style="font-weight:700;color:#ef4444;">${z.critThreshold} dB</div></div>
+    </div>
+    ${z.desc ? `<div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:8px;font-size:13px;color:#64748b;">${z.desc}</div>` : ''}
+  `;
+  const editBtn = el('view-edit-btn');
+  if (editBtn) {
+    editBtn.style.display = '';
+    editBtn.onclick = () => { closeViewModal(); openEditModal(id); };
+  }
+  openModal('view-overlay', 'view-modal');
+}
+function closeViewModal(){ closeModalById('view-overlay', 'view-modal'); }
+
+// ── KEYBOARD ───────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ closeModal(); closeDeleteModal(); closeViewModal(); }
+});
+
+// ── INIT ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.__LQ_SESSION__) AppData._session = window.__LQ_SESSION__;
+  await Promise.all([AppData.loadZones(), AppData.loadAlerts()]);
+  AppData.applySession();
+  startClock();
+  renderStats();
+  renderTable();
+  AppData.updateNotifBadge();
+
+  setInterval(async () => {
+    await Promise.all([AppData.loadZones(), AppData.loadAlerts()]);
+    renderStats();
+    renderTable();
+    AppData.updateNotifBadge();
+  }, 5000);
+});
+  </script>
 </body>
 </html>

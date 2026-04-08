@@ -12,10 +12,13 @@ $initial = strtoupper(substr($user['name'], 0, 1));
   <title>LibraryQuiet – Manager Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="/NOISE_MONITOR/assets/dashboard-manager.css"/>
   <script>window.__LQ_SESSION__ = <?= json_encode($user) ?>;</script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ============================================================
+   LibraryQuiet – dashboard-manager.css (teal theme)
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --teal:   #0d9488;
@@ -276,23 +279,15 @@ td { padding: 11px 12px; font-size: 13px; }
     <header id="topbar">
       <div><div class="tb-title">Manager Dashboard</div><div class="tb-date" id="tb-date">Loading...</div></div>
       <div class="tb-right">
-        <div class="role-badge manager-badge" id="role-badge">📋 Library Manager</div>
+    
         <div class="live-badge"><span class="live-dot"></span><span class="live-text">LIVE</span></div>
-        <a class="tb-bell" href="/NOISE_MONITOR/dashboards/manager/alerts-manager.php">🔔<span class="tb-bc" id="bell-count">0</span></a>
+       
         <div class="tb-av"><?= $initial ?></div>
       </div>
     </header>
 
     <div id="content">
       <div class="welcome-banner">
-        <div class="wb-left">
-          <div class="wb-title" id="wb-title">Welcome back, <?= htmlspecialchars($user['name']) ?>! 📋</div>
-          <div class="wb-sub">Monitor zones, set sensor levels, and resolve alerts.</div>
-        </div>
-        <div class="wb-right">
-          <a class="wb-btn" href="/NOISE_MONITOR/dashboards/manager/alerts-manager.php">View Alerts</a>
-          <a class="wb-btn wb-btn-outline" href="/NOISE_MONITOR/dashboards/manager/monitor-manager.php">Live Monitor</a>
-        </div>
       </div>
 
       <div class="stat-grid">
@@ -303,27 +298,14 @@ td { padding: 11px 12px; font-size: 13px; }
       </div>
 
       <div class="sensor-panel">
-        <div class="sensor-panel-title">📡 Manual Sensor Input <span style="font-size:11px;font-weight:600;background:#ccfbf1;color:#134e4a;padding:2px 10px;border-radius:20px;margin-left:8px;">Manager Only</span></div>
-        <div class="sensor-panel-sub">Set noise level per zone manually. Changes visible to Admin and Staff instantly.</div>
+        <div class="sensor-panel-title">📡 Manual Sensor Input <span style="font-size:11px;font-weight:600;background:#ccfbf1;color:#134e4a;padding:2px 10px;border-radius:20px;margin-left:8px;"></span></div>
+        <div class="sensor-panel-sub"></div>
         <div class="sensor-grid" id="sensor-grid"></div>
         <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
           <button onclick="clearAllSensors()" style="padding:8px 18px;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;color:#64748b;">✕ Clear All Overrides</button>
           <button onclick="simulateRandom()" style="padding:8px 18px;background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;color:#0d9488;">🔀 Simulate Random</button>
         </div>
       </div>
-
-      <div class="quick-actions">
-        <div class="qa-title">Quick Actions</div>
-        <div class="qa-grid">
-          <a class="qa-card" href="/NOISE_MONITOR/dashboards/manager/monitor-manager.php"><div class="qa-icon" style="background:#eff6ff;">◎</div><div class="qa-label">Live Monitor</div><div class="qa-sub">Real-time zone readings</div></a>
-          <a class="qa-card" href="/NOISE_MONITOR/dashboards/manager/alerts-manager.php"><div class="qa-icon" style="background:#fff7ed;">⚑</div><div class="qa-label">Alert Logs</div><div class="qa-sub" id="qa-alert-sub">-- active alerts</div></a>
-          <a class="qa-card" href="/NOISE_MONITOR/dashboards/manager/reports-manager.php"><div class="qa-icon" style="background:#fdf4ff;">▤</div><div class="qa-label">Reports</div><div class="qa-sub">Generate & send reports</div></a>
-          <a class="qa-card" href="/NOISE_MONITOR/dashboards/manager/zones.php"><div class="qa-icon" style="background:#f0fdfa;">▦</div><div class="qa-label">Zone Management</div><div class="qa-sub">View & manage zones</div></a>
-          <div class="qa-card qa-locked"><div class="qa-icon" style="background:#f1f5f9;">🔒</div><div class="qa-label" style="color:#94a3b8;">User Management</div><div class="qa-sub" style="color:#cbd5e1;">Admin access only</div></div>
-          <div class="qa-card qa-locked"><div class="qa-icon" style="background:#f1f5f9;">🔒</div><div class="qa-label" style="color:#94a3b8;">Settings</div><div class="qa-sub" style="color:#cbd5e1;">Admin access only</div></div>
-        </div>
-      </div>
-
       <div class="card" style="margin-bottom:16px;">
         <div class="card-head-row">
           <div><div class="card-title">🗺️ Zone Map — NBSC Campus</div><div class="card-sub mb0">Live noise markers · Updates every 2s</div></div>
@@ -357,7 +339,314 @@ td { padding: 11px 12px; font-size: 13px; }
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/NOISE_MONITOR/app-data.js"></script>
-  <script src="/NOISE_MONITOR/dashboard-manager.js"></script>
   <script src="/NOISE_MONITOR/map-init.js"></script>
+  <script>
+// ============================================================
+//  LibraryQuiet – dashboard-manager.js (PHP version)
+//  Manager: manual sensor input + resolve alerts
+//  Requires: app-data.js loaded first
+// ============================================================
+
+const HOURLY = [22,28,35,48,42,38,55,61,58,45,38,30];
+const HOURS  = ['8AM','9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM','5PM','6PM','7PM'];
+
+function noiseColor(db)  { return db<40?'#10b981':db<60?'#f59e0b':'#ef4444'; }
+function noiseStatus(db) { return db<40?'quiet':db<60?'moderate':'loud'; }
+function noiseLabel(db)  { return db<40?'Quiet':db<60?'Moderate':'Loud'; }
+function statusStyle(s)  {
+  if (s==='quiet')    return { bg:'#d1fae5', color:'#065f46', dot:'#10b981' };
+  if (s==='moderate') return { bg:'#fef3c7', color:'#92400e', dot:'#f59e0b' };
+  return                     { bg:'#fee2e2', color:'#991b1b', dot:'#ef4444' };
+}
+function el(id)        { return document.getElementById(id); }
+function setText(id,v) { const e=el(id); if(e) e.textContent=v; }
+
+// ── CLOCK ──────────────────────────────────────────────────
+function startClock() {
+  const update = () => {
+    const now = new Date();
+    setText('tb-date',
+      now.toLocaleDateString('en-PH',{weekday:'long',year:'numeric',month:'long',day:'numeric'})
+      + ' · ' + now.toLocaleTimeString('en-PH'));
+  };
+  update(); setInterval(update, 1000);
+}
+
+function toggleSidebar() { el('sidebar').classList.toggle('collapsed'); }
+
+// ── STATS ──────────────────────────────────────────────────
+function renderStats() {
+  const zones = AppData.getZones();
+  if (!zones.length) return;
+  const avg    = Math.round(zones.reduce((a,z)=>a+z.level,0)/zones.length);
+  const quiet  = zones.filter(z=>noiseStatus(z.level)==='quiet').length;
+  const loud   = zones.filter(z=>noiseStatus(z.level)==='loud').length;
+  const active = AppData.getActiveAlerts().length;
+
+  setText('s-avg',    avg + ' dB');
+  setText('s-quiet',  quiet + ' / ' + zones.length);
+  setText('s-loud',   loud);
+  setText('s-alerts', active);
+
+  const qas = el('qa-alert-sub');
+  if (qas) qas.textContent = active + ' active alert' + (active!==1?'s':'');
+
+  const tr = el('s-avg-trend');
+  if (tr) {
+    if (avg<40)      { tr.textContent='↓ All zones in good range'; tr.className='stat-trend trend-green'; }
+    else if (avg<60) { tr.textContent='→ Moderate overall level';  tr.className='stat-trend trend-blue'; }
+    else             { tr.textContent='↑ Elevated noise detected'; tr.className='stat-trend trend-red'; }
+  }
+  const at = el('s-alert-trend');
+  if (at) {
+    at.textContent = active>0?`↑ ${active} alert${active!==1?'s':''} need attention`:'✓ No active alerts';
+    at.className   = active>0?'stat-trend trend-red':'stat-trend trend-green';
+  }
+  const ll = el('s-loud-lbl');
+  if (ll) {
+    ll.textContent = loud>0?`↑ ${loud} zone${loud>1?'s':''} above threshold`:'✓ No loud zones';
+    ll.className   = loud>0?'stat-trend trend-red':'stat-trend trend-green';
+  }
+}
+
+// ── MANUAL SENSOR INPUT ────────────────────────────────────
+function renderSensorGrid() {
+  const grid = el('sensor-grid'); if (!grid) return;
+  const zones     = AppData.getZones();
+  const overrides = AppData.getSensorOverrides();
+
+  grid.innerHTML = zones.map(z => {
+    const col      = noiseColor(z.level);
+    const status   = noiseStatus(z.level);
+    const sc       = statusStyle(status);
+    const pct      = Math.min(100,(z.level/90)*100).toFixed(1);
+    const override = overrides[z.id];
+    const isManual = z.manualOverride && override;
+
+    return `
+      <div class="sensor-card ${isManual?'manual':''}" id="scard-${z.id}">
+        ${isManual?`<div class="sc-manual-badge">📡 Manual · Set at ${override.setAt}</div>`:''}
+        <div class="sc-name">${z.name}</div>
+        <div class="sc-id">${z.sensor} · Floor ${z.floor} · 🔋${z.battery||80}%</div>
+        <div class="sc-level" id="slevel-${z.id}" style="color:${col};">${Math.round(z.level)} dB</div>
+        <div class="sc-bar-track">
+          <div class="sc-bar-fill" id="sbar-${z.id}" style="width:${pct}%;background:${col};"></div>
+        </div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;">
+          <span style="background:${sc.bg};color:${sc.color};padding:2px 8px;border-radius:20px;font-weight:700;font-size:10px;">${noiseLabel(z.level)}</span>
+          &nbsp;Warn: ${z.warnThreshold} dB &nbsp;Crit: ${z.critThreshold} dB
+        </div>
+        <div class="sc-input-row">
+          <input class="sc-input" id="sinput-${z.id}" type="number" min="0" max="120" step="1"
+            value="${Math.round(z.level)}" placeholder="0–120 dB"
+            onkeydown="if(event.key==='Enter') setOneSensor('${z.id}')"/>
+          <button class="sc-set-btn" onclick="setOneSensor('${z.id}')">Set</button>
+          ${isManual?`<button class="sc-clear-btn" onclick="clearOneSensor('${z.id}')">✕</button>`:''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function updateSensorGrid() {
+  AppData.getZones().forEach(z => {
+    const col     = noiseColor(z.level);
+    const pct     = Math.min(100,(z.level/90)*100).toFixed(1);
+    const levelEl = el('slevel-'+z.id);
+    const barEl   = el('sbar-'+z.id);
+    if (levelEl) { levelEl.textContent = Math.round(z.level)+' dB'; levelEl.style.color=col; }
+    if (barEl)   { barEl.style.width=pct+'%'; barEl.style.background=col; }
+  });
+}
+
+async function setOneSensor(zoneId) {
+  const input = el('sinput-'+zoneId);
+  if (!input) return;
+  const val = parseFloat(input.value);
+  if (isNaN(val)||val<0||val>120) {
+    input.style.borderColor='#ef4444';
+    setTimeout(()=>input.style.borderColor='',1500);
+    return;
+  }
+  await AppData.setSensorLevel(zoneId, val); // auto creates alert if above threshold
+  await AppData.loadZones();
+  await AppData.loadAlerts();
+  renderSensorGrid(); renderStats(); renderZoneBars(); renderSummary(); renderAlerts();
+  AppData.updateNotifBadge();
+  showToast(`✅ ${AppData.getZone(zoneId)?.name||'Zone'} set to ${Math.round(val)} dB`);
+}
+
+async function clearOneSensor(zoneId) {
+  await AppData.clearSensorOverride(zoneId);
+  await AppData.loadZones();
+  renderSensorGrid(); renderStats(); renderZoneBars(); renderSummary();
+  showToast(`↩ Override cleared for ${AppData.getZone(zoneId)?.name||'zone'}`);
+}
+
+async function clearAllSensors() {
+  const zones = AppData.getZones();
+  for (const z of zones) { await AppData.clearSensorOverride(z.id); }
+  await AppData.loadZones();
+  renderSensorGrid(); renderStats(); renderZoneBars(); renderSummary();
+  showToast('↩ All manual overrides cleared');
+}
+
+async function simulateRandom() {
+  const zones = AppData.getZones();
+  for (const z of zones) {
+    await AppData.setSensorLevel(z.id, Math.floor(Math.random()*90)+10);
+  }
+  await AppData.loadZones(); // this also triggers check_alerts
+  await AppData.loadAlerts();
+  renderSensorGrid(); renderStats(); renderZoneBars(); renderSummary(); renderAlerts();
+  AppData.updateNotifBadge();
+  showToast('🔀 Random noise levels simulated');
+}
+
+function showToast(msg) {
+  let toast = el('mgr-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'mgr-toast';
+    toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#0f172a;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);font-family:"Plus Jakarta Sans",sans-serif;transition:all .3s;opacity:0;transform:translateY(10px);';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1'; toast.style.transform = 'translateY(0)';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(()=>{ toast.style.opacity='0'; toast.style.transform='translateY(10px)'; }, 3000);
+}
+
+// ── RESOLVE ALERTS ─────────────────────────────────────────
+async function resolveAlert(alertId) {
+  const session = AppData.getSession();
+  const name    = session?.name || 'Library Manager';
+  await AppData.resolveAlert(alertId, name);
+  await AppData.loadAlerts();
+  renderAlerts(); renderStats();
+  AppData.updateNotifBadge();
+  showToast('✅ Alert resolved');
+}
+
+// ── ZONE BARS ──────────────────────────────────────────────
+function renderZoneBars() {
+  const wrap = el('zone-bars'); if (!wrap) return;
+  wrap.innerHTML = AppData.getZones().map(z => {
+    const s=noiseStatus(z.level), sc=statusStyle(s);
+    const pct=Math.min(100,(z.level/90)*100).toFixed(1), col=noiseColor(z.level);
+    return `<div class="zone-row">
+      <div class="zone-meta">
+        <div class="zone-left">
+          <div class="zone-dot" style="background:${sc.dot};"></div>
+          <span class="zone-name">${z.name}</span>
+          <span class="zone-floor">${z.floor}</span>
+          ${z.manualOverride?'<span style="font-size:9px;background:#ccfbf1;color:#134e4a;padding:1px 6px;border-radius:4px;font-weight:700;">📡 Manual</span>':''}
+        </div>
+        <div class="zone-right">
+          <span class="zone-db" style="color:${col};">${Math.round(z.level)} dB</span>
+          <span class="zone-badge" style="background:${sc.bg};color:${sc.color};">${s}</span>
+        </div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col};"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ── CHART ──────────────────────────────────────────────────
+function renderChart() {
+  const wrap = el('chart-wrap'); if (!wrap) return;
+  const max = Math.max(...HOURLY);
+  wrap.innerHTML = HOURLY.map((v,i) => {
+    const h=Math.round((v/max)*120), bg=v>=60?'#ef4444':v>=40?'#f59e0b':'#3b82f6', pk=v===max;
+    return `<div class="chart-col">
+      ${pk?`<div style="font-size:9px;color:#ef4444;font-weight:700;margin-bottom:2px;">${v}</div>`:''}
+      <div class="chart-bar" style="height:${h}px;background:${bg};${pk?'box-shadow:0 0 8px rgba(239,68,68,.4);':''}"></div>
+      <span class="chart-lbl">${HOURS[i]}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── ALERTS TABLE WITH RESOLVE ──────────────────────────────
+function renderAlerts() {
+  const tbody = el('alerts-tbody'); if (!tbody) return;
+  tbody.innerHTML = AppData.getAlerts().slice(0,5).map(a => {
+    const tb = a.type==='critical'?'<span class="badge b-red">Critical</span>':a.type==='warning'?'<span class="badge b-yellow">Warning</span>':'<span class="badge b-green">Info</span>';
+    const sb = a.status==='active'?'<span class="badge b-red">Active</span>':'<span class="badge b-gray">Resolved</span>';
+    const action = a.status==='active'
+      ? `<button onclick="resolveAlert('${a.id}')" style="padding:5px 12px;background:#0d9488;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✅ Resolve</button>`
+      : `<span style="font-size:11px;color:#94a3b8;">By ${a.resolvedBy||'Manager'}</span>`;
+    return `<tr>
+      <td style="color:#64748b;font-size:12px;">${a.time}</td>
+      <td style="font-weight:700;">${a.zone}</td>
+      <td><span style="font-weight:900;color:${noiseColor(a.level)};">${a.level} dB</span></td>
+      <td>${tb}</td>
+      <td style="color:#64748b;">${a.msg}</td>
+      <td>${sb}</td>
+      <td>${action}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── SUMMARY ────────────────────────────────────────────────
+function renderSummary() {
+  const zones = AppData.getZones();
+  setText('sum-quiet',    zones.filter(z=>noiseStatus(z.level)==='quiet').length);
+  setText('sum-moderate', zones.filter(z=>noiseStatus(z.level)==='moderate').length);
+  setText('sum-loud',     zones.filter(z=>noiseStatus(z.level)==='loud').length);
+}
+
+// ── LIVE UPDATE — reads from DB same as Admin ─────────────
+function startLiveUpdate() {
+  // Sync with server every 3s — same data source as admin
+  setInterval(async () => {
+    await Promise.all([
+      AppData.loadZones(),
+      AppData.loadAlerts(),
+      AppData.loadSensorOverrides(),
+    ]);
+    renderStats();
+    renderZoneBars();
+    renderSummary();
+    renderSensorGrid();
+    renderAlerts();
+    AppData.updateNotifBadge();
+  }, 3000);
+}
+
+// ── INIT ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  // Use PHP-injected session
+  if (window.__LQ_SESSION__) AppData._session = window.__LQ_SESSION__;
+
+  // Load all data from API
+  await Promise.all([
+    AppData.loadZones(),
+    AppData.loadAlerts(),
+    AppData.loadSensorOverrides(),
+    AppData.loadUsers(),
+    AppData.loadReports(),
+  ]);
+
+  AppData.applySession();
+  startClock();
+
+  // Welcome banner with real name
+  const session = AppData.getSession();
+  if (session) {
+    const firstName = session.name.split(' ')[0];
+    const roleIcon  = '📋';
+    const wbTitle   = el('wb-title');
+    if (wbTitle) wbTitle.textContent = `Welcome back, ${firstName}! ${roleIcon}`;
+  }
+
+  renderStats();
+  renderSensorGrid();
+  renderZoneBars();
+  renderChart();
+  renderAlerts();
+  renderSummary();
+  startLiveUpdate();
+});
+
+  </script>
 </body>
 </html>
