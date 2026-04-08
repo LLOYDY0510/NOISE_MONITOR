@@ -11,11 +11,10 @@ $initial = strtoupper(substr($user['name'], 0, 1));
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LibraryQuiet – Reports (Admin)</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/NOISE_MONITOR/assets/reports-admin.css"/>
   <script>window.__LQ_SESSION__ = <?= json_encode($user) ?>;</script>
   <style>
-    /* ============================================================
-   LibraryQuiet – reports-admin.css
+/* ============================================================
+   LibraryQuiet – reports-admin (combined)
    ============================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--blue:#1d4ed8;--blue2:#3b82f6;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--bg:#f0f4f8;--sidebar:#0f172a;--sb2:#1e293b;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--light:#94a3b8;--radius:16px}
@@ -68,7 +67,6 @@ nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden}
 #content::-webkit-scrollbar{width:5px}
 #content::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:5px}
 @keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-/* UNREAD BANNER */
 .unread-banner{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:14px;padding:16px 22px;margin-bottom:18px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(29,78,216,.3);animation:pageIn .3s ease}
 .ub-icon{font-size:28px}
 .ub-title{color:#fff;font-weight:800;font-size:14px;margin-bottom:2px}
@@ -76,7 +74,6 @@ nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden}
 .ub-text{flex:1}
 .ub-btn{padding:8px 18px;background:#fff;color:#1d4ed8;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;white-space:nowrap}
 .ub-btn:hover{background:#eff6ff}
-/* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:0 1px 8px rgba(0,0,0,.07);border-left:4px solid;transition:transform .2s}
 .stat-card:hover{transform:translateY(-2px)}
@@ -87,23 +84,19 @@ nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden}
 .stat-val{font-size:30px;font-weight:900;color:var(--text);line-height:1}
 .stat-sub{font-size:11px;color:var(--muted);margin-top:5px}
 .stat-icon{font-size:26px;opacity:.8}
-/* CARD */
 .card{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:0 1px 8px rgba(0,0,0,.07);margin-bottom:16px}
 .card-title{font-weight:800;font-size:15px;color:var(--text);margin-bottom:4px}
 .card-sub{font-size:12px;color:var(--light);margin-bottom:18px}.card-sub.mb0{margin-bottom:0}
 .card-head-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-/* REPORT TYPES GRID */
 .report-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .rt-card{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;text-align:center}
 .rt-card:hover{border-color:#3b82f6;background:#eff6ff;transform:translateY(-2px);box-shadow:0 4px 14px rgba(59,130,246,.15)}
 .rt-icon{font-size:28px;margin-bottom:10px}
 .rt-name{font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px}
 .rt-desc{font-size:11px;color:var(--light)}
-/* FILTER TABS */
 .filter-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:3px;gap:2px}
 .ftab{padding:6px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--light);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
 .ftab.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
-/* TABLE */
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 thead tr{border-bottom:2px solid #f1f5f9}
@@ -121,12 +114,10 @@ td{padding:12px 12px;font-size:13px}
 .tb-view{background:#eff6ff;color:#1d4ed8}.tb-view:hover{background:#dbeafe}
 .tb-dl{background:#f0fdf4;color:#15803d}.tb-dl:hover{background:#dcfce7}
 .tb-del{background:#fff5f5;color:#dc2626}.tb-del:hover{background:#fee2e2}
-/* BUTTONS */
 .btn-primary{padding:9px 20px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(59,130,246,.35)}
 .btn-primary:hover{transform:translateY(-1px)}
 .btn-secondary{padding:9px 16px;background:#f1f5f9;border:1.5px solid var(--border);border-radius:10px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
 .btn-secondary:hover{background:#e2e8f0}
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:200}
 .modal-overlay.show{display:block}
 .modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:560px;max-width:95vw;max-height:90vh;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2);z-index:300;flex-direction:column;overflow:hidden;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
@@ -148,7 +139,6 @@ td{padding:12px 12px;font-size:13px}
 .rdb-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
 .rdb-row:last-child{border-bottom:none}
 .rdb-label{color:var(--muted)}.rdb-val{font-weight:700;color:var(--text)}
-/* GENERATE MODAL FORM */
 .form-group{margin-bottom:16px}
 .form-label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
 .form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;background:#f8fafc;color:var(--text);transition:all .2s;resize:vertical}
@@ -158,9 +148,7 @@ td{padding:12px 12px;font-size:13px}
 .rp-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #dbeafe;font-size:12px}
 .rp-row:last-child{border-bottom:none}
 .rp-label{color:var(--muted)}.rp-val{font-weight:700;color:var(--text)}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif}
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:#065f46;color:#d1fae5}.toast.info{background:#1e3a5f;color:#bfdbfe}
 @media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}.report-type-grid{grid-template-columns:repeat(2,1fr)}}
@@ -210,15 +198,13 @@ td{padding:12px 12px;font-size:13px}
         <div class="tb-date" id="tb-date">Loading...</div>
       </div>
       <div class="tb-right">
-        <div class="role-badge admin-badge" id="role-badge">👑 Administrator</div>
-        <a class="tb-bell" href="/NOISE_MONITOR/dashboards/admin/alerts-admin.php">🔔<span class="tb-bc" id="bell-count">0</span></a>
+    
         <div class="tb-av"><?= $initial ?></div>
       </div>
     </header>
 
     <div id="content">
 
-      <!-- UNREAD BANNER -->
       <div class="unread-banner" id="unread-banner" style="display:none;">
         <span class="ub-icon">📋</span>
         <div class="ub-text">
@@ -228,30 +214,19 @@ td{padding:12px 12px;font-size:13px}
         <button class="ub-btn" onclick="markAllRead()">Mark All Read ✓</button>
       </div>
 
-      <!-- STAT CARDS -->
       <div class="stat-grid">
-        <div class="stat-card blue">
-          <div class="stat-top"><div><div class="stat-label">Total Reports</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">All records</div></div><div class="stat-icon">📋</div></div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-top"><div><div class="stat-label">Generated Today</div><div class="stat-val" id="s-today">0</div><div class="stat-sub">Today's reports</div></div><div class="stat-icon">📅</div></div>
-        </div>
-        <div class="stat-card yellow">
-          <div class="stat-top"><div><div class="stat-label">Sent by Manager</div><div class="stat-val" id="s-sent">0</div><div class="stat-sub">Forwarded reports</div></div><div class="stat-icon">📤</div></div>
-        </div>
-        <div class="stat-card red">
-          <div class="stat-top"><div><div class="stat-label">Unread</div><div class="stat-val" id="s-unread">0</div><div class="stat-sub">Not yet reviewed</div></div><div class="stat-icon">🔴</div></div>
-        </div>
+        <div class="stat-card blue"><div class="stat-top"><div><div class="stat-label">Total Reports</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">All records</div></div><div class="stat-icon">📋</div></div></div>
+        <div class="stat-card green"><div class="stat-top"><div><div class="stat-label">Generated Today</div><div class="stat-val" id="s-today">0</div><div class="stat-sub">Today's reports</div></div><div class="stat-icon">📅</div></div></div>
+        <div class="stat-card yellow"><div class="stat-top"><div><div class="stat-label">Sent by Manager</div><div class="stat-val" id="s-sent">0</div><div class="stat-sub">Forwarded reports</div></div><div class="stat-icon">📤</div></div></div>
+        <div class="stat-card red"><div class="stat-top"><div><div class="stat-label">Unread</div><div class="stat-val" id="s-unread">0</div><div class="stat-sub">Not yet reviewed</div></div><div class="stat-icon">🔴</div></div></div>
       </div>
 
-      <!-- GENERATE REPORT -->
       <div class="card" style="margin-bottom:16px;">
         <div class="card-title">Generate New Report</div>
         <div class="card-sub">Admin can generate any report type</div>
         <div class="report-type-grid" id="report-type-grid"></div>
       </div>
 
-      <!-- REPORT LOG TABLE -->
       <div class="card">
         <div class="card-head-row">
           <div><div class="card-title">Report History</div><div class="card-sub mb0">All generated and received reports</div></div>
@@ -276,7 +251,7 @@ td{padding:12px 12px;font-size:13px}
     </div>
   </div>
 
-  <!-- GENERATE MODAL (Admin with notes) -->
+  <!-- GENERATE MODAL -->
   <div class="modal-overlay" id="gen-overlay" onclick="closeGenModal()"></div>
   <div class="modal" id="gen-modal">
     <div class="modal-header">
@@ -315,7 +290,386 @@ td{padding:12px 12px;font-size:13px}
   </div>
 
   <div class="toast" id="toast"></div>
-  <script src="/NOISE_MONITOR/app-data.js"></script>
-  <script src="/NOISE_MONITOR/reports-admin.js"></script>
+
+  <script>
+  // ============================================================
+  //  AppData — app-data.js (inlined)
+  // ============================================================
+  const AppData = (() => {
+    const API = '/NOISE_MONITOR/api.php';
+    let _session = window.__LQ_SESSION__ || null;
+
+    async function post(action, data = {}) {
+      try {
+        const res = await fetch(`${API}?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        return await res.json();
+      } catch(e) { console.error(`API[${action}]:`, e); return { error: e.message }; }
+    }
+    async function get(action) {
+      try {
+        const res = await fetch(`${API}?action=${action}`);
+        return await res.json();
+      } catch(e) { console.error(`API[${action}]:`, e); return null; }
+    }
+
+    // SESSION
+    async function loadSession() { const d = await get('session'); _session = d?.user || null; return _session; }
+    function getSession()        { return _session; }
+    function isAdmin()           { return _session?.role === 'Administrator'; }
+    function isManager()         { return _session?.role === 'Library Manager'; }
+    function isStaff()           { return _session?.role === 'Library Staff'; }
+    async function clearSession(){ await post('logout'); _session = null; window.location.href = '/NOISE_MONITOR/logout.php'; }
+
+    function applySession() {
+      if (!_session) return;
+      const name = _session.name || _session.email;
+      const initial = name.charAt(0).toUpperCase();
+      const isAdm = isAdmin(), isMgr = isManager();
+      const roleIcon  = isAdm ? '👑 ' : isMgr ? '📋 ' : '👤 ';
+      const roleColor = isAdm ? 'linear-gradient(135deg,#1d4ed8,#3b82f6)' : isMgr ? 'linear-gradient(135deg,#0d9488,#0f766e)' : 'linear-gradient(135deg,#7c3aed,#8b5cf6)';
+      document.querySelectorAll('.sb-uname,.sb-bname').forEach(el => el.textContent = name);
+      document.querySelectorAll('.sb-urole').forEach(el => el.textContent = roleIcon + _session.role);
+      document.querySelectorAll('.sb-brole').forEach(el => el.textContent = _session.role);
+      document.querySelectorAll('.sb-av,.sb-av-lg,.tb-av,.top-av').forEach(el => { el.textContent = initial; el.style.background = roleColor; });
+      const badge = document.getElementById('role-badge');
+      if (badge) { badge.textContent = roleIcon + _session.role; badge.className = 'role-badge ' + (isAdm ? 'admin-badge' : isMgr ? 'manager-badge' : 'staff-badge'); }
+      updateNotifBadge();
+    }
+
+    function today() {
+      return new Date().toLocaleDateString('en-PH', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
+    // ZONES
+    let _zones = [];
+    async function loadZones()          { _zones = await get('get_zones') || []; return _zones; }
+    function getZones()                  { return _zones; }
+    function getZone(id)                 { return _zones.find(z => z.id === id); }
+    async function setSensorLevel(zoneId, db) {
+      await post('set_sensor', { id: zoneId, level: db });
+      const z = _zones.find(z => z.id === zoneId);
+      if (z) { z.level = db; z.manualOverride = true; }
+      _alerts = await get('get_alerts') || _alerts;
+    }
+    async function clearSensorOverride(zoneId) { await post('clear_sensor', { id: zoneId }); const z = _zones.find(z => z.id === zoneId); if (z) z.manualOverride = false; }
+    let _overrides = {};
+    async function loadSensorOverrides() { _overrides = await get('get_sensor_overrides') || {}; return _overrides; }
+    function getSensorOverrides()         { return _overrides; }
+    async function addZone(z)             { return await post('add_zone', z); }
+    async function updateZone(z)          { return await post('update_zone', z); }
+    async function deleteZone(id)         { return await post('delete_zone', { id }); }
+
+    // ALERTS
+    let _alerts = [];
+    async function loadAlerts()           { _alerts = await get('get_alerts') || []; return _alerts; }
+    function getAlerts()                  { return _alerts; }
+    function getActiveAlerts()            { return _alerts.filter(a => a.status === 'active'); }
+    async function resolveAlert(id, by)   { await post('resolve_alert', { id, resolvedBy: by }); const a = _alerts.find(a => a.id === id); if (a) { a.status = 'resolved'; a.resolvedBy = by; } updateNotifBadge(); }
+    async function addAlertMessage(alertId, message) { await post('add_alert_message', { alertId, message }); }
+    function getAlertMessages(alertId)    { return _alerts.find(a => a.id === alertId)?.messages || []; }
+    async function deleteAlert(id)        { await post('delete_alert', { id }); _alerts = _alerts.filter(a => a.id !== id); }
+    async function addAlert(a)            { return await post('add_alert', a); }
+
+    // REPORTS
+    let _reports = [];
+    async function loadReports()          { _reports = await get('get_reports') || []; return _reports; }
+    function getReports()                 { return _reports; }
+    function getUnreadReports()           { return _reports.filter(r => r.sentToAdmin && !r.adminReadAt); }
+    async function addReport(r)           { return await post('add_report', r); }
+    async function sendReportToAdmin(id)  { return await post('send_report', { id }); }
+    async function markReportRead(id)     { return await post('mark_report_read', { id }); }
+    async function deleteReport(id)       { await post('delete_report', { id }); _reports = _reports.filter(r => r.id !== id); }
+
+    // USERS
+    let _users = [];
+    async function loadUsers()            { _users = await get('get_users') || []; return _users; }
+    function getUsers()                   { return _users; }
+    function getUserByEmail(email)        { return _users.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+    async function addUser(u)             { return await post('add_user', u); }
+    async function updateUser(id, data)   { return await post('update_user', { id, ...data }); }
+    async function deleteUser(id)         { return await post('delete_user', { id }); }
+    async function updatePassword(id, pw) { return await post('update_password', { id, password: pw }); }
+
+    // BADGE
+    function updateNotifBadge() {
+      const active = getActiveAlerts().length;
+      ['alert-nb', 'bell-count'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = active; el.style.display = active > 0 ? '' : 'none'; }
+      });
+    }
+
+    async function loadAll() { await Promise.all([loadZones(), loadAlerts(), loadSensorOverrides(), loadUsers(), loadReports()]); }
+
+    return {
+      loadSession, getSession, isAdmin, isManager, isStaff, clearSession, applySession, today,
+      loadZones, getZones, getZone, setSensorLevel, clearSensorOverride, loadSensorOverrides, getSensorOverrides, addZone, updateZone, deleteZone,
+      loadAlerts, getAlerts, getActiveAlerts, resolveAlert, addAlertMessage, getAlertMessages, deleteAlert, addAlert,
+      loadReports, getReports, getUnreadReports, addReport, sendReportToAdmin, markReportRead, deleteReport,
+      loadUsers, getUsers, getUserByEmail, addUser, updateUser, deleteUser, updatePassword,
+      updateNotifBadge, loadAll,
+      get _session() { return _session; }, set _session(v) { _session = v; }
+    };
+  })();
+
+  // ============================================================
+  //  reports-admin.js (inlined)
+  // ============================================================
+
+  const REPORT_TYPES = [
+    { type: 'Daily Noise Report',        icon: '📊', desc: "Summary of today's noise levels per zone" },
+    { type: 'Weekly Summary Report',     icon: '📅', desc: '7-day noise trend and zone comparison' },
+    { type: 'Alert Frequency Report',    icon: '⚠️', desc: 'Alert counts, types and resolution times' },
+    { type: 'Occupancy vs Noise Report', icon: '👥', desc: 'Correlation between occupancy and noise' },
+    { type: 'Monthly Report',            icon: '📆', desc: 'Monthly noise statistics and analysis' },
+    { type: 'Zone Performance Report',   icon: '▦',  desc: 'Individual zone compliance and history' },
+  ];
+
+  let currentTab   = 'all';
+  let viewTargetId = null;
+
+  function el(id)        { return document.getElementById(id); }
+  function setText(id, v){ const e = el(id); if (e) e.textContent = v; }
+
+  function startClock() {
+    const update = () => {
+      const now = new Date();
+      setText('tb-date', now.toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' · ' + now.toLocaleTimeString('en-PH'));
+    };
+    update(); setInterval(update, 1000);
+  }
+
+  function toggleSidebar() { el('sidebar').classList.toggle('collapsed'); }
+
+  function renderStats() {
+    const reports = AppData.getReports();
+    const today   = AppData.today();
+    const unread  = AppData.getUnreadReports();
+    setText('s-total',  reports.length);
+    setText('s-today',  reports.filter(r => r.date === today).length);
+    setText('s-sent',   reports.filter(r => r.sentToAdmin).length);
+    setText('s-unread', unread.length);
+    const banner = el('unread-banner');
+    if (unread.length > 0) {
+      banner.style.display = 'flex';
+      setText('unread-title', `📋 ${unread.length} unread report${unread.length > 1 ? 's' : ''} from Library Manager`);
+    } else {
+      banner.style.display = 'none';
+    }
+    AppData.updateNotifBadge();
+  }
+
+  function markAllRead() {
+    AppData.getUnreadReports().forEach(async r => await AppData.markReportRead(r.id));
+    renderStats(); renderTable();
+    showToast('✅ All reports marked as read.', 'success');
+  }
+
+  let pendingType = '';
+
+  function renderReportTypes() {
+    const grid = el('report-type-grid'); if (!grid) return;
+    grid.innerHTML = REPORT_TYPES.map(rt => `
+      <div class="rt-card" onclick="openGenModal('${rt.type}')">
+        <div class="rt-icon">${rt.icon}</div>
+        <div class="rt-name">${rt.type}</div>
+        <div class="rt-desc">${rt.desc}</div>
+      </div>`).join('');
+  }
+
+  function openGenModal(type) {
+    pendingType = type;
+    el('gen-title').textContent = type;
+    el('gen-type').value        = type;
+    el('gen-notes').value       = '';
+    const zones  = AppData.getZones();
+    const alerts = AppData.getAlerts();
+    const avg    = zones.length ? Math.round(zones.reduce((a, z) => a + z.level, 0) / zones.length) : 0;
+    el('report-preview').innerHTML = `
+      <div class="rp-title">📊 Live Data Snapshot</div>
+      <div class="rp-row"><span class="rp-label">Report Type</span><span class="rp-val">${type}</span></div>
+      <div class="rp-row"><span class="rp-label">Avg Noise Level</span><span class="rp-val">${avg} dB</span></div>
+      <div class="rp-row"><span class="rp-label">Total Zones</span><span class="rp-val">${zones.length}</span></div>
+      <div class="rp-row"><span class="rp-label">Active Alerts</span><span class="rp-val">${alerts.filter(a => a.status === 'active').length}</span></div>
+      <div class="rp-row"><span class="rp-label">Date</span><span class="rp-val">${AppData.today()}</span></div>`;
+    el('gen-overlay').classList.add('show'); el('gen-modal').classList.add('show');
+  }
+
+  function closeGenModal() {
+    el('gen-overlay').classList.remove('show'); el('gen-modal').classList.remove('show');
+  }
+
+  async function confirmGenerate() {
+    const session = AppData.getSession();
+    const notes   = el('gen-notes').value.trim();
+    const now     = new Date();
+    const zones   = AppData.getZones();
+    const alerts  = AppData.getAlerts();
+    const report  = {
+      id:          'R-' + Date.now(),
+      type:        pendingType,
+      generatedBy: session?.name || 'Administrator',
+      role:        session?.role || 'Administrator',
+      date:        AppData.today(),
+      time:        now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }),
+      sentToAdmin: false,
+      adminReadAt: AppData.today(),
+      notes:       notes || `Generated by ${session?.name || 'Admin'} on ${AppData.today()}.`,
+      data: {
+        avgNoise:     zones.length ? Math.round(zones.reduce((a, z) => a + z.level, 0) / zones.length) : 0,
+        totalZones:   zones.length,
+        quietZones:   zones.filter(z => z.level < 40).length,
+        loudZones:    zones.filter(z => z.level >= 60).length,
+        activeAlerts: alerts.filter(a => a.status === 'active').length,
+        totalAlerts:  alerts.length,
+      },
+    };
+    await AppData.addReport(report);
+    closeGenModal();
+    renderStats(); renderTable();
+    showToast(`📋 "${pendingType}" generated!`, 'success');
+  }
+
+  function getFiltered() {
+    const reports = AppData.getReports();
+    if (currentTab === 'mine')     return reports.filter(r => r.role === 'Administrator');
+    if (currentTab === 'received') return reports.filter(r => r.sentToAdmin && r.role !== 'Administrator');
+    if (currentTab === 'unread')   return reports.filter(r => r.sentToAdmin && !r.adminReadAt);
+    return reports;
+  }
+
+  function setTab(tab, btn) {
+    currentTab = tab;
+    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); renderTable();
+  }
+
+  function renderTable() {
+    const tbody   = el('reports-tbody'); if (!tbody) return;
+    const reports = getFiltered();
+    setText('tbl-count', `Showing ${reports.length} report${reports.length !== 1 ? 's' : ''}`);
+
+    if (reports.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--light);">No reports found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = reports.map((r, i) => {
+      const isUnread  = r.sentToAdmin && !r.adminReadAt;
+      const sentBadge = r.sentToAdmin ? '<span class="badge b-blue">📤 Sent</span>' : '<span class="badge b-gray">—</span>';
+      const rowCls    = isUnread ? 'unread-row' : '';
+      return `<tr class="${rowCls}" id="rrow-${r.id}">
+        <td style="color:var(--muted);">${isUnread ? '🔵 ' : ''}${i + 1}</td>
+        <td style="font-weight:800;">${r.type}</td>
+        <td><div style="font-weight:700;">${r.generatedBy}</div><div style="font-size:11px;color:var(--light);">${r.role}</div></td>
+        <td style="color:var(--muted);font-size:12px;">${r.date}</td>
+        <td style="color:var(--muted);font-size:12px;">${r.time}</td>
+        <td>${sentBadge}</td>
+        <td style="color:var(--muted);font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.notes || '—'}</td>
+        <td>
+          <div class="action-btns">
+            <button class="tbl-btn tb-view" onclick="openView('${r.id}')">👁 View</button>
+            <button class="tbl-btn tb-dl"   onclick="downloadReport('${r.id}')">⬇ Download</button>
+            <button class="tbl-btn tb-del"  onclick="deleteReport('${r.id}')">🗑</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function deleteReport(id) {
+    AppData.deleteReport(id);
+    renderStats(); renderTable();
+    showToast('🗑️ Report deleted.', 'info');
+  }
+
+  async function openView(id) {
+    const r = AppData.getReports().find(x => x.id === id); if (!r) return;
+    viewTargetId = id;
+    if (r.sentToAdmin && !r.adminReadAt) { await AppData.markReportRead(id); renderStats(); renderTable(); }
+    el('view-title').textContent = r.type;
+    const sentBadge = r.sentToAdmin ? '📤 Yes — sent by Manager' : '— Not sent';
+    el('view-body').innerHTML = `
+      <div class="view-grid">
+        <div class="view-field"><div class="vf-label">Report ID</div><div class="vf-val" style="font-family:monospace;font-size:12px;">${r.id}</div></div>
+        <div class="view-field"><div class="vf-label">Generated By</div><div class="vf-val">${r.generatedBy}</div></div>
+        <div class="view-field"><div class="vf-label">Role</div><div class="vf-val">${r.role}</div></div>
+        <div class="view-field"><div class="vf-label">Date & Time</div><div class="vf-val">${r.date} · ${r.time}</div></div>
+        <div class="view-field" style="grid-column:1/-1"><div class="vf-label">Sent to Admin</div><div class="vf-val">${sentBadge}</div></div>
+        <div class="view-divider"></div>
+        <div class="view-field" style="grid-column:1/-1"><div class="vf-label">Notes</div><div class="vf-val" style="font-weight:500;color:var(--muted);">${r.notes || 'No notes provided.'}</div></div>
+      </div>
+      ${r.data ? `<div class="report-data-box">
+        <div class="rdb-title">Report Data Snapshot</div>
+        <div class="rdb-row"><span class="rdb-label">Avg Noise Level</span><span class="rdb-val">${r.data.avgNoise} dB</span></div>
+        <div class="rdb-row"><span class="rdb-label">Total Zones</span><span class="rdb-val">${r.data.totalZones}</span></div>
+        <div class="rdb-row"><span class="rdb-label">Quiet Zones</span><span class="rdb-val">${r.data.quietZones}</span></div>
+        <div class="rdb-row"><span class="rdb-label">Loud Zones</span><span class="rdb-val">${r.data.loudZones}</span></div>
+        <div class="rdb-row"><span class="rdb-label">Active Alerts</span><span class="rdb-val">${r.data.activeAlerts}</span></div>
+        <div class="rdb-row"><span class="rdb-label">Total Alerts</span><span class="rdb-val">${r.data.totalAlerts}</span></div>
+      </div>` : ''}`;
+    el('view-overlay').classList.add('show'); el('view-modal').classList.add('show');
+  }
+
+  function downloadFromModal() { if (viewTargetId) downloadReport(viewTargetId); }
+
+  function closeView() {
+    el('view-overlay').classList.remove('show'); el('view-modal').classList.remove('show');
+  }
+
+  function downloadReport(id) {
+    const r = AppData.getReports().find(x => x.id === id); if (!r) return;
+    const zones  = AppData.getZones();
+    const alerts = AppData.getAlerts();
+    const lines  = [
+      `LIBRARYQUIET – ${r.type.toUpperCase()}`,
+      `${'='.repeat(50)}`,
+      `Report ID   : ${r.id}`,
+      `Generated By: ${r.generatedBy} (${r.role})`,
+      `Date & Time : ${r.date} ${r.time}`,
+      `Notes       : ${r.notes || '—'}`,
+      ``,
+      `ZONE SNAPSHOT`,
+      `-`.repeat(30),
+      ...zones.map(z => `${z.name.padEnd(25)} ${Math.round(z.level)} dB  [${z.status}]`),
+      ``,
+      `ACTIVE ALERTS`,
+      `-`.repeat(30),
+      ...alerts.filter(a => a.status === 'active').map(a => `${a.zone.padEnd(25)} ${a.level} dB — ${a.msg}`),
+      ``,
+      `Generated by LibraryQuiet System`,
+    ];
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = `${r.type.replace(/\s+/g, '_')}_${r.date}.txt`; a.click();
+    URL.revokeObjectURL(url);
+    showToast('⬇ Report downloaded!', 'success');
+  }
+
+  function showToast(msg, type = 'info') {
+    const t = el('toast'); t.textContent = msg; t.className = `toast ${type} show`;
+    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeView(); closeGenModal(); } });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (window.__LQ_SESSION__) AppData._session = window.__LQ_SESSION__;
+    await Promise.all([AppData.loadReports(), AppData.loadAlerts(), AppData.loadZones()]);
+    AppData.applySession();
+    startClock();
+    renderStats();
+    renderTable();
+    renderReportTypes();
+    AppData.updateNotifBadge();
+    setInterval(async () => {
+      await AppData.loadReports();
+      renderStats();
+      renderTable();
+      AppData.updateNotifBadge();
+    }, 5000);
+  });
+  </script>
 </body>
 </html>

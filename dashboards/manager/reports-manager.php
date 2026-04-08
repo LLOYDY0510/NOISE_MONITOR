@@ -11,155 +11,179 @@ $initial = strtoupper(substr($user['name'], 0, 1));
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LibraryQuiet – Reports (Manager)</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/NOISE_MONITOR/assets/reports-manager.css"/>
-  <script>window.__LQ_SESSION__ = <?= json_encode($user) ?>;</script>
   <style>
     /* ============================================================
-   LibraryQuiet – reports-manager.css  (teal)
-   ============================================================ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--teal:#0d9488;--teal2:#0f766e;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue2:#3b82f6;--bg:#f0f4f8;--sidebar:#0f172a;--sb2:#1e293b;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--light:#94a3b8;--radius:16px}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);display:flex;height:100vh;overflow:hidden}
-#sidebar{width:240px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 24px rgba(0,0,0,.3);z-index:100;transition:width .3s}
-#sidebar.collapsed{width:68px}
-.sb-logo{padding:18px 15px;border-bottom:1px solid var(--sb2);display:flex;align-items:center;gap:12px;min-height:68px}
-.sb-logo-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.sb-logo-name{color:#fff;font-weight:800;font-size:14px}.sb-logo-sub{color:#475569;font-size:11px}
-.sb-logo-text{transition:opacity .2s}
-#sidebar.collapsed .sb-logo-text{opacity:0;pointer-events:none}
-.sb-user{padding:10px 12px;border-bottom:1px solid var(--sb2)}
-.sb-user-label{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.sb-user-chip{background:var(--sb2);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px}
-.sb-av{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0}
-.sb-av.mgr{background:linear-gradient(135deg,#0d9488,#0f766e)}
-.sb-uname{color:#e2e8f0;font-size:12px;font-weight:700}.sb-urole{color:#2dd4bf;font-size:10px;font-weight:600}
-#sidebar.collapsed .sb-user{display:none}
-nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden}
-.sb-sec{font-size:10px;color:#334155;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;font-weight:700}
-.sb-div{height:1px;background:var(--sb2);margin:4px 8px}
-#sidebar.collapsed .sb-sec,#sidebar.collapsed .sb-div{display:none}
-.nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;margin-bottom:2px;background:transparent;color:#64748b;font-size:13px;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;text-align:left;text-decoration:none;white-space:nowrap;transition:all .2s}
-.nav-item:hover{background:var(--sb2);color:#cbd5e1}
-.nav-item.active{background:linear-gradient(90deg,rgba(13,148,136,.9),rgba(15,118,110,.8));color:#fff;font-weight:700}
-.ni{font-size:17px;width:22px;text-align:center;flex-shrink:0}.nl{transition:opacity .2s}
-#sidebar.collapsed .nl{opacity:0;width:0;overflow:hidden}
-#sidebar.collapsed .nav-item{justify-content:center;padding:10px 0}
-.nb{margin-left:auto;background:#ef4444;color:#fff;font-size:9px;font-weight:700;border-radius:20px;padding:2px 7px}
-#sidebar.collapsed .nb{display:none}
-.sb-bottom{padding:12px;border-top:1px solid var(--sb2);display:flex;align-items:center;gap:8px}
-.sb-av-lg{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
-.sb-binfo{flex:1;min-width:0;overflow:hidden;transition:opacity .2s}
-.sb-bname{color:#e2e8f0;font-size:12px;font-weight:700}.sb-brole{color:#475569;font-size:10px}
-#sidebar.collapsed .sb-binfo{opacity:0;width:0}
-.sb-logout{background:none;border:none;color:#475569;font-size:15px;text-decoration:none;padding:4px;transition:color .2s}
-.sb-logout:hover{color:#ef4444}
-.sb-toggle{background:none;border:none;color:#475569;font-size:13px;cursor:pointer;padding:4px;transition:transform .3s}
-#sidebar.collapsed .sb-toggle{transform:rotate(180deg)}
-#sidebar.collapsed .sb-logout{display:none}
-#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-#topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,.05);flex-shrink:0}
-.tb-title{font-weight:800;font-size:17px;color:var(--text)}.tb-date{font-size:11px;color:var(--light);margin-top:1px}
-.tb-right{display:flex;align-items:center;gap:12px}
-.role-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700}
-.manager-badge{background:#ccfbf1;color:#134e4a;border:1px solid #5eead4}
-.tb-bell{position:relative;width:36px;height:36px;border-radius:10px;background:#f8fafc;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none}
-.tb-bc{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:8px;border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff}
-.tb-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
-#content{flex:1;overflow-y:auto;padding:24px;animation:pageIn .35s ease}
-@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:0 1px 8px rgba(0,0,0,.07);border-left:4px solid;transition:transform .2s}
-.stat-card:hover{transform:translateY(-2px)}
-.stat-card.blue{border-color:#3b82f6}.stat-card.green{border-color:#10b981}
-.stat-card.teal{border-color:#0d9488}.stat-card.yellow{border-color:#f59e0b}
-.stat-top{display:flex;justify-content:space-between;align-items:flex-start}
-.stat-label{font-size:11px;color:var(--light);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:6px}
-.stat-val{font-size:30px;font-weight:900;color:var(--text);line-height:1}
-.stat-sub{font-size:11px;color:var(--muted);margin-top:5px}
-.stat-icon{font-size:26px;opacity:.8}
-.card{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:0 1px 8px rgba(0,0,0,.07);margin-bottom:16px}
-.card-title{font-weight:800;font-size:15px;color:var(--text);margin-bottom:4px}
-.card-sub{font-size:12px;color:var(--light);margin-bottom:18px}.card-sub.mb0{margin-bottom:0}
-.card-head-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-.report-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.rt-card{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;text-align:center}
-.rt-card:hover{border-color:#0d9488;background:#f0fdfa;transform:translateY(-2px);box-shadow:0 4px 14px rgba(13,148,136,.15)}
-.rt-icon{font-size:28px;margin-bottom:10px}
-.rt-name{font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px}
-.rt-desc{font-size:11px;color:var(--light)}
-.filter-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:3px;gap:2px}
-.ftab{padding:6px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--light);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.ftab.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-thead tr{border-bottom:2px solid #f1f5f9}
-th{text-align:left;padding:10px 12px;font-size:11px;color:var(--light);font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-tbody tr{border-bottom:1px solid #f8fafc;transition:background .15s}
-tbody tr:hover{background:#fafbfc}
-td{padding:12px 12px;font-size:13px}
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.b-teal{background:#ccfbf1;color:#134e4a}.b-green{background:#d1fae5;color:#065f46}
-.b-gray{background:#f1f5f9;color:#64748b}.b-yellow{background:#fef3c7;color:#92400e}
-.tbl-footer{padding:12px 4px 0;font-size:12px;color:var(--light);font-weight:600}
-.action-btns{display:flex;gap:6px}
-.tbl-btn{padding:5px 12px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.tb-view{background:#f0fdfa;color:#0d9488}.tb-view:hover{background:#ccfbf1}
-.tb-send{background:#eff6ff;color:#1d4ed8}.tb-send:hover{background:#dbeafe}
-.tb-dl{background:#f0fdf4;color:#15803d}.tb-dl:hover{background:#dcfce7}
-.btn-primary{padding:9px 20px;background:linear-gradient(135deg,#0d9488,#0f766e);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(13,148,136,.35)}
-.btn-primary:hover{transform:translateY(-1px)}
-.btn-secondary{padding:9px 16px;background:#f1f5f9;border:1.5px solid var(--border);border-radius:10px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
-.btn-secondary:hover{background:#e2e8f0}
-.btn-send{padding:9px 20px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-.btn-send:hover{transform:translateY(-1px)}
-.btn-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
-/* FORM */
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
-.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;background:#f8fafc;color:var(--text);transition:all .2s;resize:vertical}
-.form-input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(13,148,136,.1)}
-/* TOGGLE */
-.toggle-wrap{display:flex;align-items:center;gap:12px}
-.toggle{position:relative;display:inline-block;width:44px;height:24px}
-.toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#e2e8f0;border-radius:24px;cursor:pointer;transition:all .3s}
-.toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:all .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.toggle input:checked+.toggle-slider{background:var(--teal)}
-.toggle input:checked+.toggle-slider::before{transform:translateX(20px)}
-.toggle-label{font-size:13px;color:var(--muted);font-weight:600}
-/* REPORT PREVIEW */
-.report-preview{background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:12px;padding:14px 16px;margin-top:14px}
-.rp-title{font-size:11px;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.rp-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ccfbf1;font-size:12px}
-.rp-row:last-child{border-bottom:none}
-.rp-label{color:var(--muted)}.rp-val{font-weight:700;color:var(--text)}
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:200}
-.modal-overlay.show{display:block}
-.modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:540px;max-width:95vw;max-height:90vh;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2);z-index:300;flex-direction:column;overflow:hidden;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
-.modal.show{display:flex}
-@keyframes slideUp{from{opacity:0;transform:translate(-50%,-44%)}to{opacity:1;transform:translate(-50%,-48%)}}
-.modal-header{padding:22px 24px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
-.modal-title{font-weight:800;font-size:16px;color:var(--text)}.modal-sub{font-size:12px;color:var(--light);margin-top:2px}
-.modal-close{background:#f1f5f9;border:none;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--muted)}
-.modal-close:hover{background:#fee2e2;color:#ef4444}
-.modal-body{padding:22px 24px;overflow-y:auto;flex:1}
-.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
-.view-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.view-field{background:#f8fafc;border-radius:10px;padding:12px 14px}
-.vf-label{font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px}
-.vf-val{font-size:14px;font-weight:700;color:var(--text)}
-.view-divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0}
-.report-data-box{background:#f0fdfa;border-radius:12px;padding:16px;margin-top:14px;border:1px solid #99f6e4}
-.rdb-title{font-size:12px;font-weight:700;color:#0d9488;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.rdb-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ccfbf1;font-size:13px}
-.rdb-row:last-child{border-bottom:none}
-.rdb-label{color:var(--muted)}.rdb-val{font-weight:700;color:var(--text)}
-.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{background:#065f46;color:#d1fae5}.toast.info{background:#134e4a;color:#ccfbf1}
-@media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}.report-type-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){#content{padding:16px}.report-type-grid{grid-template-columns:1fr}}
+       LibraryQuiet – reports-manager styles (teal)
+       ============================================================ */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--teal:#0d9488;--teal2:#0f766e;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue2:#3b82f6;--bg:#f0f4f8;--sidebar:#0f172a;--sb2:#1e293b;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--light:#94a3b8;--radius:16px}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);display:flex;height:100vh;overflow:hidden}
+
+    /* SIDEBAR */
+    #sidebar{width:240px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 24px rgba(0,0,0,.3);z-index:100;transition:width .3s}
+    #sidebar.collapsed{width:68px}
+    .sb-logo{padding:18px 15px;border-bottom:1px solid var(--sb2);display:flex;align-items:center;gap:12px;min-height:68px}
+    .sb-logo-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+    .sb-logo-name{color:#fff;font-weight:800;font-size:14px}.sb-logo-sub{color:#475569;font-size:11px}
+    .sb-logo-text{transition:opacity .2s}
+    #sidebar.collapsed .sb-logo-text{opacity:0;pointer-events:none}
+    .sb-user{padding:10px 12px;border-bottom:1px solid var(--sb2)}
+    .sb-user-label{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .sb-user-chip{background:var(--sb2);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+    .sb-av{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0}
+    .sb-av.mgr{background:linear-gradient(135deg,#0d9488,#0f766e)}
+    .sb-uname{color:#e2e8f0;font-size:12px;font-weight:700}.sb-urole{color:#2dd4bf;font-size:10px;font-weight:600}
+    #sidebar.collapsed .sb-user{display:none}
+    nav{flex:1;padding:10px 8px;overflow-y:auto;overflow-x:hidden}
+    .sb-sec{font-size:10px;color:#334155;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;font-weight:700}
+    .sb-div{height:1px;background:var(--sb2);margin:4px 8px}
+    #sidebar.collapsed .sb-sec,#sidebar.collapsed .sb-div{display:none}
+    .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;margin-bottom:2px;background:transparent;color:#64748b;font-size:13px;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;text-align:left;text-decoration:none;white-space:nowrap;transition:all .2s}
+    .nav-item:hover{background:var(--sb2);color:#cbd5e1}
+    .nav-item.active{background:linear-gradient(90deg,rgba(13,148,136,.9),rgba(15,118,110,.8));color:#fff;font-weight:700}
+    .ni{font-size:17px;width:22px;text-align:center;flex-shrink:0}.nl{transition:opacity .2s}
+    #sidebar.collapsed .nl{opacity:0;width:0;overflow:hidden}
+    #sidebar.collapsed .nav-item{justify-content:center;padding:10px 0}
+    .nb{margin-left:auto;background:#ef4444;color:#fff;font-size:9px;font-weight:700;border-radius:20px;padding:2px 7px}
+    #sidebar.collapsed .nb{display:none}
+    .sb-bottom{padding:12px;border-top:1px solid var(--sb2);display:flex;align-items:center;gap:8px}
+    .sb-av-lg{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+    .sb-binfo{flex:1;min-width:0;overflow:hidden;transition:opacity .2s}
+    .sb-bname{color:#e2e8f0;font-size:12px;font-weight:700}.sb-brole{color:#475569;font-size:10px}
+    #sidebar.collapsed .sb-binfo{opacity:0;width:0}
+    .sb-logout{background:none;border:none;color:#475569;font-size:15px;text-decoration:none;padding:4px;transition:color .2s}
+    .sb-logout:hover{color:#ef4444}
+    .sb-toggle{background:none;border:none;color:#475569;font-size:13px;cursor:pointer;padding:4px;transition:transform .3s}
+    #sidebar.collapsed .sb-toggle{transform:rotate(180deg)}
+    #sidebar.collapsed .sb-logout{display:none}
+
+    /* MAIN */
+    #main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+    #topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,.05);flex-shrink:0}
+    .tb-title{font-weight:800;font-size:17px;color:var(--text)}.tb-date{font-size:11px;color:var(--light);margin-top:1px}
+    .tb-right{display:flex;align-items:center;gap:12px}
+    .role-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700}
+    .manager-badge{background:#ccfbf1;color:#134e4a;border:1px solid #5eead4}
+    .tb-bell{position:relative;width:36px;height:36px;border-radius:10px;background:#f8fafc;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none}
+    .tb-bc{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:8px;border-radius:50%;width:15px;height:15px;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff}
+    .tb-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+    #content{flex:1;overflow-y:auto;padding:24px;animation:pageIn .35s ease}
+    @keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+    /* STAT GRID */
+    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+    .stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:0 1px 8px rgba(0,0,0,.07);border-left:4px solid;transition:transform .2s}
+    .stat-card:hover{transform:translateY(-2px)}
+    .stat-card.blue{border-color:#3b82f6}.stat-card.green{border-color:#10b981}
+    .stat-card.teal{border-color:#0d9488}.stat-card.yellow{border-color:#f59e0b}
+    .stat-top{display:flex;justify-content:space-between;align-items:flex-start}
+    .stat-label{font-size:11px;color:var(--light);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:6px}
+    .stat-val{font-size:30px;font-weight:900;color:var(--text);line-height:1}
+    .stat-sub{font-size:11px;color:var(--muted);margin-top:5px}
+    .stat-icon{font-size:26px;opacity:.8}
+
+    /* CARDS */
+    .card{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:0 1px 8px rgba(0,0,0,.07);margin-bottom:16px}
+    .card-title{font-weight:800;font-size:15px;color:var(--text);margin-bottom:4px}
+    .card-sub{font-size:12px;color:var(--light);margin-bottom:18px}.card-sub.mb0{margin-bottom:0}
+    .card-head-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+
+    /* REPORT TYPE GRID */
+    .report-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .rt-card{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;text-align:center}
+    .rt-card:hover{border-color:#0d9488;background:#f0fdfa;transform:translateY(-2px);box-shadow:0 4px 14px rgba(13,148,136,.15)}
+    .rt-icon{font-size:28px;margin-bottom:10px}
+    .rt-name{font-weight:800;font-size:13px;color:var(--text);margin-bottom:4px}
+    .rt-desc{font-size:11px;color:var(--light)}
+
+    /* FILTER TABS */
+    .filter-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:3px;gap:2px}
+    .ftab{padding:6px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--light);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .ftab.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+    /* TABLE */
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse}
+    thead tr{border-bottom:2px solid #f1f5f9}
+    th{text-align:left;padding:10px 12px;font-size:11px;color:var(--light);font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+    tbody tr{border-bottom:1px solid #f8fafc;transition:background .15s}
+    tbody tr:hover{background:#fafbfc}
+    td{padding:12px 12px;font-size:13px}
+    .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .b-teal{background:#ccfbf1;color:#134e4a}.b-green{background:#d1fae5;color:#065f46}
+    .b-gray{background:#f1f5f9;color:#64748b}.b-yellow{background:#fef3c7;color:#92400e}
+    .tbl-footer{padding:12px 4px 0;font-size:12px;color:var(--light);font-weight:600}
+    .action-btns{display:flex;gap:6px}
+    .tbl-btn{padding:5px 12px;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .tb-view{background:#f0fdfa;color:#0d9488}.tb-view:hover{background:#ccfbf1}
+    .tb-send{background:#eff6ff;color:#1d4ed8}.tb-send:hover{background:#dbeafe}
+    .tb-dl{background:#f0fdf4;color:#15803d}.tb-dl:hover{background:#dcfce7}
+
+    /* BUTTONS */
+    .btn-primary{padding:9px 20px;background:linear-gradient(135deg,#0d9488,#0f766e);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(13,148,136,.35)}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-secondary{padding:9px 16px;background:#f1f5f9;border:1.5px solid var(--border);border-radius:10px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+    .btn-secondary:hover{background:#e2e8f0}
+    .btn-send{padding:9px 20px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .btn-send:hover{transform:translateY(-1px)}
+    .btn-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+    /* FORM */
+    .form-group{margin-bottom:16px}
+    .form-label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+    .form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;background:#f8fafc;color:var(--text);transition:all .2s;resize:vertical}
+    .form-input:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(13,148,136,.1)}
+
+    /* TOGGLE */
+    .toggle-wrap{display:flex;align-items:center;gap:12px}
+    .toggle{position:relative;display:inline-block;width:44px;height:24px}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;inset:0;background:#e2e8f0;border-radius:24px;cursor:pointer;transition:all .3s}
+    .toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:all .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+    .toggle input:checked+.toggle-slider{background:var(--teal)}
+    .toggle input:checked+.toggle-slider::before{transform:translateX(20px)}
+    .toggle-label{font-size:13px;color:var(--muted);font-weight:600}
+
+    /* REPORT PREVIEW */
+    .report-preview{background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:12px;padding:14px 16px;margin-top:14px}
+    .rp-title{font-size:11px;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+    .rp-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ccfbf1;font-size:12px}
+    .rp-row:last-child{border-bottom:none}
+    .rp-label{color:var(--muted)}.rp-val{font-weight:700;color:var(--text)}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:200}
+    .modal-overlay.show{display:block}
+    .modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:540px;max-width:95vw;max-height:90vh;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.2);z-index:300;flex-direction:column;overflow:hidden;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+    .modal.show{display:flex}
+    @keyframes slideUp{from{opacity:0;transform:translate(-50%,-44%)}to{opacity:1;transform:translate(-50%,-48%)}}
+    .modal-header{padding:22px 24px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
+    .modal-title{font-weight:800;font-size:16px;color:var(--text)}.modal-sub{font-size:12px;color:var(--light);margin-top:2px}
+    .modal-close{background:#f1f5f9;border:none;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--muted)}
+    .modal-close:hover{background:#fee2e2;color:#ef4444}
+    .modal-body{padding:22px 24px;overflow-y:auto;flex:1}
+    .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
+
+    /* VIEW MODAL */
+    .view-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .view-field{background:#f8fafc;border-radius:10px;padding:12px 14px}
+    .vf-label{font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px}
+    .vf-val{font-size:14px;font-weight:700;color:var(--text)}
+    .view-divider{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0}
+    .report-data-box{background:#f0fdfa;border-radius:12px;padding:16px;margin-top:14px;border:1px solid #99f6e4}
+    .rdb-title{font-size:12px;font-weight:700;color:#0d9488;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+    .rdb-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ccfbf1;font-size:13px}
+    .rdb-row:last-child{border-bottom:none}
+    .rdb-label{color:var(--muted)}.rdb-val{font-weight:700;color:var(--text)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.success{background:#065f46;color:#d1fae5}.toast.info{background:#134e4a;color:#ccfbf1}
+
+    /* RESPONSIVE */
+    @media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}.report-type-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){#content{padding:16px}.report-type-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -167,13 +191,19 @@ td{padding:12px 12px;font-size:13px}
   <aside id="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-icon">📡</div>
-      <div class="sb-logo-text"><div class="sb-logo-name">LibraryQuiet</div><div class="sb-logo-sub">Noise Monitor v1.0</div></div>
+      <div class="sb-logo-text">
+        <div class="sb-logo-name">LibraryQuiet</div>
+        <div class="sb-logo-sub">Noise Monitor v1.0</div>
+      </div>
     </div>
     <div class="sb-user">
       <div class="sb-user-label">Logged in as</div>
       <div class="sb-user-chip">
         <div class="sb-av"><?= $initial ?></div>
-        <div><div class="sb-uname"><?= htmlspecialchars($user['name']) ?></div><div class="sb-urole">📋 Library Manager</div></div>
+        <div>
+          <div class="sb-uname"><?= htmlspecialchars($user['name']) ?></div>
+          <div class="sb-urole">📋 Library Manager</div>
+        </div>
       </div>
     </div>
     <nav>
@@ -188,7 +218,10 @@ td{padding:12px 12px;font-size:13px}
     </nav>
     <div class="sb-bottom">
       <div class="sb-av-lg"><?= $initial ?></div>
-      <div class="sb-binfo"><div class="sb-bname"><?= htmlspecialchars($user['name']) ?></div><div class="sb-brole">Library Manager</div></div>
+      <div class="sb-binfo">
+        <div class="sb-bname"><?= htmlspecialchars($user['name']) ?></div>
+        <div class="sb-brole">Library Manager</div>
+      </div>
       <a class="sb-logout" href="/NOISE_MONITOR/logout.php" title="Logout">⏻</a>
       <button class="sb-toggle" onclick="toggleSidebar()">◀</button>
     </div>
@@ -201,8 +234,8 @@ td{padding:12px 12px;font-size:13px}
         <div class="tb-date" id="tb-date">Loading...</div>
       </div>
       <div class="tb-right">
-        <div class="role-badge manager-badge" id="role-badge">📋 Library Manager</div>
-        <a class="tb-bell" href="/NOISE_MONITOR/dashboards/manager/alerts-manager.php">🔔<span class="tb-bc" id="bell-count">0</span></a>
+  
+    
         <div class="tb-av"><?= $initial ?></div>
       </div>
     </header>
@@ -210,10 +243,30 @@ td{padding:12px 12px;font-size:13px}
     <div id="content">
 
       <div class="stat-grid">
-        <div class="stat-card blue"><div class="stat-top"><div><div class="stat-label">Total Reports</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">My reports</div></div><div class="stat-icon">📋</div></div></div>
-        <div class="stat-card green"><div class="stat-top"><div><div class="stat-label">Generated Today</div><div class="stat-val" id="s-today">0</div><div class="stat-sub">Today's reports</div></div><div class="stat-icon">📅</div></div></div>
-        <div class="stat-card teal"><div class="stat-top"><div><div class="stat-label">Sent to Admin</div><div class="stat-val" id="s-sent">0</div><div class="stat-sub">Forwarded reports</div></div><div class="stat-icon">📤</div></div></div>
-        <div class="stat-card yellow"><div class="stat-top"><div><div class="stat-label">Pending Send</div><div class="stat-val" id="s-pending">0</div><div class="stat-sub">Not yet forwarded</div></div><div class="stat-icon">⏳</div></div></div>
+        <div class="stat-card blue">
+          <div class="stat-top">
+            <div><div class="stat-label">Total Reports</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">My reports</div></div>
+            <div class="stat-icon">📋</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-top">
+            <div><div class="stat-label">Generated Today</div><div class="stat-val" id="s-today">0</div><div class="stat-sub">Today's reports</div></div>
+            <div class="stat-icon">📅</div>
+          </div>
+        </div>
+        <div class="stat-card teal">
+          <div class="stat-top">
+            <div><div class="stat-label">Sent to Admin</div><div class="stat-val" id="s-sent">0</div><div class="stat-sub">Forwarded reports</div></div>
+            <div class="stat-icon">📤</div>
+          </div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-top">
+            <div><div class="stat-label">Pending Send</div><div class="stat-val" id="s-pending">0</div><div class="stat-sub">Not yet forwarded</div></div>
+            <div class="stat-icon">⏳</div>
+          </div>
+        </div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
@@ -224,7 +277,10 @@ td{padding:12px 12px;font-size:13px}
 
       <div class="card">
         <div class="card-head-row">
-          <div><div class="card-title">My Report History</div><div class="card-sub mb0">Reports you have generated</div></div>
+          <div>
+            <div class="card-title">My Report History</div>
+            <div class="card-sub mb0">Reports you have generated</div>
+          </div>
           <div class="filter-tabs">
             <button class="ftab active" onclick="setTab('all',this)">All</button>
             <button class="ftab" onclick="setTab('sent',this)">Sent to Admin</button>
@@ -234,7 +290,15 @@ td{padding:12px 12px;font-size:13px}
         <div class="tbl-wrap">
           <table>
             <thead>
-              <tr><th>#</th><th>Report Type</th><th>Date</th><th>Time</th><th>Sent to Admin</th><th>Notes</th><th>Actions</th></tr>
+              <tr>
+                <th>#</th>
+                <th>Report Type</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Sent to Admin</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
             </thead>
             <tbody id="reports-tbody"></tbody>
           </table>
@@ -249,7 +313,10 @@ td{padding:12px 12px;font-size:13px}
   <div class="modal-overlay" id="gen-overlay" onclick="closeGenModal()"></div>
   <div class="modal" id="gen-modal">
     <div class="modal-header">
-      <div><div class="modal-title" id="gen-title">Generate Report</div><div class="modal-sub">Fill in report details</div></div>
+      <div>
+        <div class="modal-title" id="gen-title">Generate Report</div>
+        <div class="modal-sub">Fill in report details</div>
+      </div>
       <button class="modal-close" onclick="closeGenModal()">✕</button>
     </div>
     <div class="modal-body">
@@ -283,7 +350,10 @@ td{padding:12px 12px;font-size:13px}
   <div class="modal-overlay" id="view-overlay" onclick="closeView()"></div>
   <div class="modal" id="view-modal">
     <div class="modal-header">
-      <div><div class="modal-title" id="view-title">Report Details</div><div class="modal-sub">Full report information</div></div>
+      <div>
+        <div class="modal-title" id="view-title">Report Details</div>
+        <div class="modal-sub">Full report information</div>
+      </div>
       <button class="modal-close" onclick="closeView()">✕</button>
     </div>
     <div class="modal-body" id="view-body"></div>
@@ -295,7 +365,465 @@ td{padding:12px 12px;font-size:13px}
   </div>
 
   <div class="toast" id="toast"></div>
-  <script src="/NOISE_MONITOR/app-data.js"></script>
-  <script src="/NOISE_MONITOR/reports-manager.js"></script>
+
+  <script>
+    // ============================================================
+    //  app-data.js (inline)
+    // ============================================================
+    window.__LQ_SESSION__ = <?= json_encode($user) ?>;
+
+    const AppData = (() => {
+      const API = '/NOISE_MONITOR/api.php';
+      let _session = window.__LQ_SESSION__ || null;
+
+      async function post(action, data = {}) {
+        try {
+          const res = await fetch(`${API}?action=${action}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          return await res.json();
+        } catch(e) { console.error(`API[${action}]:`, e); return { error: e.message }; }
+      }
+
+      async function get(action) {
+        try {
+          const res = await fetch(`${API}?action=${action}`);
+          return await res.json();
+        } catch(e) { console.error(`API[${action}]:`, e); return null; }
+      }
+
+      // SESSION
+      async function loadSession() { const d = await get('session'); _session = d?.user || null; return _session; }
+      function getSession()  { return _session; }
+      function isAdmin()     { return _session?.role === 'Administrator'; }
+      function isManager()   { return _session?.role === 'Library Manager'; }
+      function isStaff()     { return _session?.role === 'Library Staff'; }
+      async function clearSession() { await post('logout'); _session = null; window.location.href = '/NOISE_MONITOR/logout.php'; }
+
+      function applySession() {
+        if (!_session) return;
+        const name      = _session.name || _session.email;
+        const initial   = name.charAt(0).toUpperCase();
+        const isAdm     = isAdmin(), isMgr = isManager();
+        const roleIcon  = isAdm ? '👑 ' : isMgr ? '📋 ' : '👤 ';
+        const roleColor = isAdm
+          ? 'linear-gradient(135deg,#1d4ed8,#3b82f6)'
+          : isMgr
+            ? 'linear-gradient(135deg,#0d9488,#0f766e)'
+            : 'linear-gradient(135deg,#7c3aed,#8b5cf6)';
+
+        document.querySelectorAll('.sb-uname,.sb-bname').forEach(el => el.textContent = name);
+        document.querySelectorAll('.sb-urole').forEach(el => el.textContent = roleIcon + _session.role);
+        document.querySelectorAll('.sb-brole').forEach(el => el.textContent = _session.role);
+        document.querySelectorAll('.sb-av,.sb-av-lg,.tb-av,.top-av').forEach(el => {
+          el.textContent = initial;
+          el.style.background = roleColor;
+        });
+        const badge = document.getElementById('role-badge');
+        if (badge) {
+          badge.textContent = roleIcon + _session.role;
+          badge.className = 'role-badge ' + (isAdm ? 'admin-badge' : isMgr ? 'manager-badge' : 'staff-badge');
+        }
+        updateNotifBadge();
+      }
+
+      // ZONES
+      let _zones = [];
+      async function loadZones() { _zones = await get('get_zones') || []; return _zones; }
+      function getZones()  { return _zones; }
+      function getZone(id) { return _zones.find(z => z.id === id); }
+      async function setSensorLevel(zoneId, db) {
+        await post('set_sensor', { id: zoneId, level: db });
+        const z = _zones.find(z => z.id === zoneId);
+        if (z) { z.level = db; z.manualOverride = true; }
+        _alerts = await get('get_alerts') || _alerts;
+      }
+      async function clearSensorOverride(zoneId) {
+        await post('clear_sensor', { id: zoneId });
+        const z = _zones.find(z => z.id === zoneId);
+        if (z) z.manualOverride = false;
+      }
+      let _overrides = {};
+      async function loadSensorOverrides() { _overrides = await get('get_sensor_overrides') || {}; return _overrides; }
+      function getSensorOverrides() { return _overrides; }
+      async function addZone(z)       { return await post('add_zone', z); }
+      async function updateZone(z)    { return await post('update_zone', z); }
+      async function deleteZone(id)   { return await post('delete_zone', { id }); }
+
+      // ALERTS
+      let _alerts = [];
+      async function loadAlerts()  { _alerts = await get('get_alerts') || []; return _alerts; }
+      function getAlerts()         { return _alerts; }
+      function getActiveAlerts()   { return _alerts.filter(a => a.status === 'active'); }
+      async function resolveAlert(id, by) {
+        await post('resolve_alert', { id, resolvedBy: by });
+        const a = _alerts.find(a => a.id === id);
+        if (a) { a.status = 'resolved'; a.resolvedBy = by; }
+        updateNotifBadge();
+      }
+      async function addAlertMessage(alertId, message) { await post('add_alert_message', { alertId, message }); }
+      function getAlertMessages(alertId) { return _alerts.find(a => a.id === alertId)?.messages || []; }
+      async function deleteAlert(id) { await post('delete_alert', { id }); _alerts = _alerts.filter(a => a.id !== id); }
+      async function addAlert(a)     { return await post('add_alert', a); }
+
+      // REPORTS
+      let _reports = [];
+      async function loadReports()        { _reports = await get('get_reports') || []; return _reports; }
+      function getReports()               { return _reports; }
+      function getUnreadReports()         { return _reports.filter(r => r.sentToAdmin && !r.adminReadAt); }
+      async function addReport(r)         { return await post('add_report', r); }
+      async function sendReportToAdmin(id){ return await post('send_report', { id }); }
+      async function markReportRead(id)   { return await post('mark_report_read', { id }); }
+      async function deleteReport(id)     { await post('delete_report', { id }); _reports = _reports.filter(r => r.id !== id); }
+
+      // USERS
+      let _users = [];
+      async function loadUsers()            { _users = await get('get_users') || []; return _users; }
+      function getUsers()                   { return _users; }
+      function getUserByEmail(email)        { return _users.find(u => u.email.toLowerCase() === email.toLowerCase()); }
+      async function addUser(u)             { return await post('add_user', u); }
+      async function updateUser(id, data)   { return await post('update_user', { id, ...data }); }
+      async function deleteUser(id)         { return await post('delete_user', { id }); }
+      async function updatePassword(id, pw) { return await post('update_password', { id, password: pw }); }
+
+      // NOTIFICATIONS (used by reports)
+      let _notifications = [];
+      function addNotification(n) { _notifications.push(n); }
+      function getNotifications() { return _notifications; }
+
+      // BADGE
+      function updateNotifBadge() {
+        const active = getActiveAlerts().length;
+        ['alert-nb', 'bell-count'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.textContent = active; el.style.display = active > 0 ? '' : 'none'; }
+        });
+      }
+
+      // TODAY helper
+      function today() {
+        return new Date().toISOString().split('T')[0];
+      }
+
+      async function loadAll() {
+        await Promise.all([loadZones(), loadAlerts(), loadSensorOverrides(), loadUsers(), loadReports()]);
+      }
+
+      return {
+        loadSession, getSession, isAdmin, isManager, isStaff, clearSession, applySession,
+        loadZones, getZones, getZone, setSensorLevel, clearSensorOverride, loadSensorOverrides, getSensorOverrides, addZone, updateZone, deleteZone,
+        loadAlerts, getAlerts, getActiveAlerts, resolveAlert, addAlertMessage, getAlertMessages, deleteAlert, addAlert,
+        loadReports, getReports, getUnreadReports, addReport, sendReportToAdmin, markReportRead, deleteReport,
+        loadUsers, getUsers, getUserByEmail, addUser, updateUser, deleteUser, updatePassword,
+        addNotification, getNotifications,
+        updateNotifBadge, loadAll, today,
+        get _session() { return _session; },
+        set _session(v) { _session = v; }
+      };
+    })();
+
+    // ============================================================
+    //  reports-manager.js (inline)
+    // ============================================================
+    const REPORT_TYPES = [
+      { type: 'Daily Noise Report',        icon: '📊', desc: "Summary of today's noise levels per zone" },
+      { type: 'Weekly Summary Report',     icon: '📅', desc: '7-day noise trend and zone comparison' },
+      { type: 'Alert Frequency Report',    icon: '⚠️', desc: 'Alert counts, types and resolution times' },
+      { type: 'Occupancy vs Noise Report', icon: '👥', desc: 'Correlation between occupancy and noise' },
+      { type: 'Monthly Report',            icon: '📆', desc: 'Monthly noise statistics and analysis' },
+      { type: 'Zone Performance Report',   icon: '▦',  desc: 'Individual zone compliance and history' },
+    ];
+
+    let currentTab   = 'all';
+    let pendingType  = '';
+    let viewTargetId = null;
+
+    function el(id)        { return document.getElementById(id); }
+    function setText(id,v) { const e = el(id); if (e) e.textContent = v; }
+
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        setText('tb-date',
+          now.toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
+          + ' · ' + now.toLocaleTimeString('en-PH')
+        );
+      };
+      update(); setInterval(update, 1000);
+    }
+
+    function toggleSidebar() { el('sidebar').classList.toggle('collapsed'); }
+
+    // ── STATS ──────────────────────────────────────────────────
+    function renderStats() {
+      const session = AppData.getSession();
+      const reports = AppData.getReports().filter(r => r.generatedBy === session?.name || r.role === 'Library Manager');
+      const todayStr = AppData.today();
+      setText('s-total',   reports.length);
+      setText('s-today',   reports.filter(r => r.date === todayStr).length);
+      setText('s-sent',    reports.filter(r => r.sentToAdmin).length);
+      setText('s-pending', reports.filter(r => !r.sentToAdmin).length);
+      AppData.updateNotifBadge();
+    }
+
+    // ── REPORT TYPE CARDS ──────────────────────────────────────
+    function renderReportTypes() {
+      const grid = el('report-type-grid'); if (!grid) return;
+      grid.innerHTML = REPORT_TYPES.map(rt => `
+        <div class="rt-card" onclick="openGenModal('${rt.type}')">
+          <div class="rt-icon">${rt.icon}</div>
+          <div class="rt-name">${rt.type}</div>
+          <div class="rt-desc">${rt.desc}</div>
+        </div>`).join('');
+    }
+
+    // ── GENERATE MODAL ─────────────────────────────────────────
+    function openGenModal(type) {
+      pendingType = type;
+      el('gen-title').textContent = type;
+      el('gen-type').value        = type;
+      el('gen-notes').value       = '';
+      el('gen-send').checked      = false;
+
+      const zones  = AppData.getZones();
+      const alerts = AppData.getAlerts();
+      const avg    = zones.length ? Math.round(zones.reduce((a, z) => a + z.level, 0) / zones.length) : 0;
+
+      el('report-preview').innerHTML = `
+        <div class="rp-title">📋 Report Preview</div>
+        <div class="rp-row"><span class="rp-label">Report Type</span><span class="rp-val">${type}</span></div>
+        <div class="rp-row"><span class="rp-label">Avg Noise</span><span class="rp-val">${avg} dB</span></div>
+        <div class="rp-row"><span class="rp-label">Total Zones</span><span class="rp-val">${zones.length}</span></div>
+        <div class="rp-row"><span class="rp-label">Active Alerts</span><span class="rp-val">${alerts.filter(a => a.status === 'active').length}</span></div>
+        <div class="rp-row"><span class="rp-label">Date</span><span class="rp-val">${AppData.today()}</span></div>`;
+
+      el('gen-overlay').classList.add('show');
+      el('gen-modal').classList.add('show');
+    }
+
+    function closeGenModal() {
+      el('gen-overlay').classList.remove('show');
+      el('gen-modal').classList.remove('show');
+    }
+
+    async function confirmGenerate() {
+      const session = AppData.getSession();
+      const notes   = el('gen-notes').value.trim();
+      const sendNow = el('gen-send').checked;
+      const now     = new Date();
+      const zones   = AppData.getZones();
+      const alerts  = AppData.getAlerts();
+
+      const report = {
+        id:          'R-' + Date.now(),
+        type:        pendingType,
+        generatedBy: session?.name || 'Library Manager',
+        role:        session?.role  || 'Library Manager',
+        date:        AppData.today(),
+        time:        now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }),
+        sentToAdmin: sendNow,
+        adminReadAt: null,
+        notes:       notes || `Generated by ${session?.name || 'Manager'} on ${AppData.today()}.`,
+        data: {
+          avgNoise:     zones.length ? Math.round(zones.reduce((a, z) => a + z.level, 0) / zones.length) : 0,
+          totalZones:   zones.length,
+          quietZones:   zones.filter(z => z.level < 40).length,
+          loudZones:    zones.filter(z => z.level >= 60).length,
+          activeAlerts: alerts.filter(a => a.status === 'active').length,
+          totalAlerts:  alerts.length,
+        },
+      };
+
+      await AppData.addReport(report);
+
+      if (sendNow) {
+        AppData.addNotification({
+          id:       'N-' + Date.now(),
+          type:     'report',
+          title:    'New Report from Manager',
+          msg:      `${session?.name || 'Manager'} sent: ${pendingType}`,
+          from:     session?.name || 'Manager',
+          time:     report.time,
+          date:     report.date,
+          read:     false,
+          reportId: report.id,
+        });
+        showToast('📤 Report generated & sent to Admin!', 'success');
+      } else {
+        showToast(`📋 Report "${pendingType}" generated!`, 'success');
+      }
+
+      closeGenModal();
+      renderStats();
+      renderTable();
+    }
+
+    // ── TABLE ──────────────────────────────────────────────────
+    function getFiltered() {
+      const session = AppData.getSession();
+      let reports   = AppData.getReports().filter(r => r.generatedBy === session?.name || r.role === 'Library Manager');
+      if (currentTab === 'sent')    reports = reports.filter(r =>  r.sentToAdmin);
+      if (currentTab === 'notsent') reports = reports.filter(r => !r.sentToAdmin);
+      return reports;
+    }
+
+    function setTab(tab, btn) {
+      currentTab = tab;
+      document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody   = el('reports-tbody'); if (!tbody) return;
+      const reports = getFiltered();
+      setText('tbl-count', `Showing ${reports.length} report${reports.length !== 1 ? 's' : ''}`);
+
+      if (reports.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--light);">No reports yet. Generate one above!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = reports.map((r, i) => {
+        const sentBadge = r.sentToAdmin
+          ? '<span class="badge b-teal">📤 Sent</span>'
+          : '<span class="badge b-gray">Not sent</span>';
+        const sendBtn = !r.sentToAdmin
+          ? `<button class="tbl-btn tb-send" onclick="sendToAdmin('${r.id}')">📤 Send</button>`
+          : '';
+        return `<tr id="rrow-${r.id}">
+          <td style="color:var(--muted);">${i + 1}</td>
+          <td style="font-weight:800;">${r.type}</td>
+          <td style="color:var(--muted);font-size:12px;">${r.date}</td>
+          <td style="color:var(--muted);font-size:12px;">${r.time}</td>
+          <td>${sentBadge}</td>
+          <td style="color:var(--muted);font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.notes || '—'}</td>
+          <td>
+            <div class="action-btns">
+              <button class="tbl-btn tb-view" onclick="openView('${r.id}')">👁 View</button>
+              ${sendBtn}
+              <button class="tbl-btn tb-dl" onclick="downloadReport('${r.id}')">⬇</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    // ── SEND TO ADMIN ──────────────────────────────────────────
+    async function sendToAdmin(id) {
+      const session = AppData.getSession();
+      await AppData.sendReportToAdmin(id, session?.name || 'Library Manager');
+      renderStats();
+      renderTable();
+      showToast('📤 Report sent to Administrator!', 'success');
+    }
+
+    // ── VIEW MODAL ─────────────────────────────────────────────
+    function openView(id) {
+      const r = AppData.getReports().find(x => x.id === id); if (!r) return;
+      viewTargetId = id;
+      el('view-title').textContent = r.type;
+
+      const sentLbl = r.sentToAdmin
+        ? `📤 Yes — sent at ${r.sentAt || r.time}`
+        : '— Not sent yet';
+
+      el('view-body').innerHTML = `
+        <div class="view-grid">
+          <div class="view-field"><div class="vf-label">Report ID</div><div class="vf-val" style="font-family:monospace;font-size:12px;">${r.id}</div></div>
+          <div class="view-field"><div class="vf-label">Generated By</div><div class="vf-val">${r.generatedBy}</div></div>
+          <div class="view-field"><div class="vf-label">Date</div><div class="vf-val">${r.date}</div></div>
+          <div class="view-field"><div class="vf-label">Time</div><div class="vf-val">${r.time}</div></div>
+          <div class="view-field" style="grid-column:1/-1"><div class="vf-label">Sent to Admin</div><div class="vf-val">${sentLbl}</div></div>
+          <div class="view-divider"></div>
+          <div class="view-field" style="grid-column:1/-1"><div class="vf-label">Notes</div><div class="vf-val" style="font-weight:500;color:var(--muted);">${r.notes || 'No notes.'}</div></div>
+        </div>
+        ${r.data ? `<div class="report-data-box">
+          <div class="rdb-title">Data Snapshot</div>
+          <div class="rdb-row"><span class="rdb-label">Avg Noise</span><span class="rdb-val">${r.data.avgNoise} dB</span></div>
+          <div class="rdb-row"><span class="rdb-label">Total Zones</span><span class="rdb-val">${r.data.totalZones}</span></div>
+          <div class="rdb-row"><span class="rdb-label">Quiet / Loud</span><span class="rdb-val">${r.data.quietZones} / ${r.data.loudZones}</span></div>
+          <div class="rdb-row"><span class="rdb-label">Active Alerts</span><span class="rdb-val">${r.data.activeAlerts}</span></div>
+        </div>` : ''}`;
+
+      const sendBtn = el('modal-send-btn');
+      if (r.sentToAdmin) {
+        sendBtn.disabled    = true;
+        sendBtn.textContent = '✓ Already Sent';
+      } else {
+        sendBtn.disabled    = false;
+        sendBtn.textContent = '📤 Send to Admin';
+        sendBtn.onclick     = () => { sendToAdmin(id); closeView(); };
+      }
+
+      el('view-overlay').classList.add('show');
+      el('view-modal').classList.add('show');
+    }
+
+    function downloadFromModal() { if (viewTargetId) downloadReport(viewTargetId); }
+
+    function closeView() {
+      el('view-overlay').classList.remove('show');
+      el('view-modal').classList.remove('show');
+    }
+
+    function downloadReport(id) {
+      const r = AppData.getReports().find(x => x.id === id); if (!r) return;
+      const zones  = AppData.getZones();
+      const alerts = AppData.getAlerts();
+      const lines  = [
+        `LIBRARYQUIET – ${r.type.toUpperCase()}`,
+        `${'='.repeat(50)}`,
+        `Report ID   : ${r.id}`,
+        `Generated By: ${r.generatedBy} (${r.role})`,
+        `Date & Time : ${r.date} ${r.time}`,
+        `Sent to Admin: ${r.sentToAdmin ? 'Yes' : 'No'}`,
+        `Notes       : ${r.notes || '—'}`,
+        ``,
+        `ZONE SNAPSHOT`,
+        `-`.repeat(30),
+        ...zones.map(z => `${z.name.padEnd(25)} ${Math.round(z.level)} dB`),
+        ``,
+        `ACTIVE ALERTS`,
+        `-`.repeat(30),
+        ...alerts.filter(a => a.status === 'active').map(a => `${a.zone.padEnd(25)} ${a.level} dB — ${a.msg}`),
+        ``,
+        `Generated by LibraryQuiet System`,
+      ];
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `${r.type.replace(/\s+/g, '_')}_${r.date}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('⬇ Report downloaded!', 'success');
+    }
+
+    function showToast(msg, type = 'info') {
+      const t = el('toast');
+      t.textContent = msg;
+      t.className   = `toast ${type} show`;
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeView(); closeGenModal(); }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.__LQ_SESSION__) AppData._session = window.__LQ_SESSION__;
+      await Promise.all([AppData.loadReports(), AppData.loadAlerts(), AppData.loadZones()]);
+      AppData.applySession();
+      startClock();
+      renderStats();
+      renderReportTypes();
+      renderTable();
+      AppData.updateNotifBadge();
+    });
+  </script>
 </body>
 </html>
