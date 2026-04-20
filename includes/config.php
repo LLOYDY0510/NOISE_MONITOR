@@ -3,9 +3,9 @@
 //  LibraryQuiet – includes/config.php
 // ============================================================
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'librarysabaan');
+define('DB_USER', 'u442411629_dev_library');
+define('DB_PASS', '6nV6$5BSLjjl');
+define('DB_NAME', 'u442411629_librarysaba');
 define('BASE',    '/NOISE_MONITOR');
 
 if (session_status() === PHP_SESSION_NONE) {
